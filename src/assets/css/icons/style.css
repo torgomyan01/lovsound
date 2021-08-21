@@ -1,0 +1,42 @@
+.text-area {
+    width: 80% !important;
+}
+
+.form-control textarea {
+    resize: none;
+    outline: none;
+    border: 1px solid #0003;
+    border-radius: 5px;
+    height: 40px;
+    font-size: 15px;
+    font-family: inherit;
+    color: #424a61;
+    width: 500px;
+    text-align: center;
+    padding-top: 7px;
+    background: #e9ecef;
+}
+.input-group-text {
+    height: 60px;
+}
+
+#font-name {
+    padding: 1rem;
+}
+.search-icons {
+    width: 80% !important;
+    margin: 0 auto;
+    margin-top: 3rem;
+}
+.far,
+.fas,
+.fad,
+.fal {
+    font-size: 27px;
+}
+.search-icon {
+    font-size: 21px;
+    margin-left: 10px;
+    margin-top: 6px;
+    color: #673ab7;
+}
