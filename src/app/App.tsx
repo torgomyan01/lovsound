@@ -1,24 +1,23 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'assets/css/style.css';
 import 'assets/css/icons/and-icons.css';
-import AlertSite from '../features/alert/alert';
-import { useDispatch } from 'react-redux';
-import { openAlert, setMessageAlert } from '../redux/alert-site';
-import HeaderSite from '../features/header/header-site';
+import AlertSite from 'features/alert/alert';
+import HomPage from 'pages/home';
+import Player from 'features/player';
+import ModalLogin from 'features/moad-login/modal-login';
+import ModalRegister from 'features/moad-register/modal-register';
+import { ALL_URL } from 'utils/urls';
 
 function App() {
-    const dispatch = useDispatch();
     return (
         <>
-            <div
-                onClick={() => {
-                    dispatch(openAlert(true));
-                    dispatch(setMessageAlert('ando jan'));
-                }}>
-                and
-            </div>
-            <HeaderSite />
+            <Route path={ALL_URL.HOME} exact component={HomPage} />
+
+            <Player />
+            <ModalLogin />
+            <ModalRegister />
             <AlertSite />
         </>
     );

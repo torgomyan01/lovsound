@@ -5,9 +5,11 @@ import {
 } from '@reduxjs/toolkit';
 
 import AlertSite from '../redux/alert-site';
+import ModalSites from '../redux/modals';
 
 const reducers = combineReducers({
-    AlertSite
+    AlertSite,
+    ModalSites
 });
 
 export default configureStore({

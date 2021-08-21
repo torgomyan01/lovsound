@@ -1,9 +1,14 @@
 declare interface IAlertSite {
     AlertSite: {
         open: boolean;
-        vertical: string;
-        horizontal: string;
         message: string;
         processUploading: number;
+    };
+}
+
+declare interface IModalSites {
+    ModalSites: {
+        modalLogin: boolean;
+        modalRegister: boolean;
     };
 }
