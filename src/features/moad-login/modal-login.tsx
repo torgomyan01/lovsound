@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOpenModalLogin } from 'redux/modals';
 import { Button, makeStyles, TextField } from '@material-ui/core';
+import { LoginUser } from 'all-api/all-api';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,6 +24,25 @@ function ModalLogin() {
         dispatch(setOpenModalLogin(false));
     }
     const classes = useStyles();
+
+    const [loginEmail, setLoginEmail] = useState<string>('');
+    const [passwordName, setPasswordName] = useState<string>('');
+
+    function startLogin(e: any) {
+        e.preventDefault();
+        console.log(loginEmail, passwordName);
+        const data = new FormData();
+        data.append('email', loginEmail);
+        data.append('password', passwordName);
+
+        LoginUser(data)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
     return (
         <Modal
             size="sm"
@@ -35,17 +55,31 @@ function ModalLogin() {
             <Modal.Body>
                 <div className="content">
                     <form
+                        onSubmit={startLogin}
                         className={classes.root}
                         noValidate
                         autoComplete="off">
-                        <TextField id="login-email-user" label="Ваше Email" />
+                        <TextField
+                            id="login-email-user"
+                            label="Ваше Email"
+                            type="email"
+                            onChange={(e: any) => {
+                                setLoginEmail(e.target.value);
+                            }}
+                        />
                         <TextField
                             id="password-user"
                             label="Ваше пароль"
                             type="password"
+                            onChange={(e: any) => {
+                                setPasswordName(e.target.value);
+                            }}
                         />
                         <div className="d-flex justify-content-center">
-                            <Button variant="outlined" color="secondary">
+                            <Button
+                                variant="outlined"
+                                type="submit"
+                                color="secondary">
                                 <i className="fal fa-sign-in mr-2" />
                                 Войти
                             </Button>

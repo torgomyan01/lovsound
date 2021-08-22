@@ -24,6 +24,7 @@
         "qs": "^6.9.4",
         "randomstring": "^1.2.1",
         "react": "^17.0.1",
+        "react-audio-player": "^0.17.0",
         "react-bootstrap": "^1.4.0",
         "react-dom": "^17.0.1",
         "react-redux": "^7.2.2",
@@ -55,6 +56,7 @@
     },
     "devDependencies": {
         "@types/google-map-react": "^2.1.2",
+        "@types/jquery": "^3.5.6",
         "@types/randomstring": "^1.1.6",
         "@types/react-image-crop": "^8.1.2",
         "@types/react-select": "^4.0.16",

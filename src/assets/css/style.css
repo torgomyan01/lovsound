@@ -126,6 +126,25 @@ header {
     border-right: 1px solid rgba(0, 0, 0, 0.25);
     border-left: 1px solid rgba(0, 0, 0, 0.25);
     padding: 0; }
+    .site-content .container-site-content .block-name-and-map-url {
+      margin-top: 70px;
+      display: inline-block; }
+      .site-content .container-site-content .block-name-and-map-url .body-name-and-map-url {
+        width: 100%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: start;
+            -ms-flex-pack: start;
+                justify-content: start;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center; }
+        .site-content .container-site-content .block-name-and-map-url .body-name-and-map-url .title-content {
+          margin-top: 0; }
+        .site-content .container-site-content .block-name-and-map-url .body-name-and-map-url .breadcrumb-block {
+          margin-left: 40px;
+          margin-bottom: 28px; }
     .site-content .container-site-content .title-content {
       display: inline-block;
       margin-top: 70px;
@@ -136,6 +155,8 @@ header {
       position: relative;
       margin-bottom: 30px;
       padding-left: 30px; }
+      .site-content .container-site-content .title-content.track-view {
+        margin-top: 0; }
       .site-content .container-site-content .title-content:before {
         content: '';
         position: absolute;
@@ -144,6 +165,105 @@ header {
         left: 30px;
         bottom: -5px;
         background: #4231ab; }
+    .site-content .container-site-content .track-name-view {
+      font-weight: bold;
+      font-size: 25px;
+      line-height: 29px;
+      color: #000000;
+      padding-left: 30px; }
+    .site-content .container-site-content .track-view-info {
+      padding-left: 30px;
+      margin-top: 20px; }
+    .site-content .container-site-content .hashtags {
+      padding-left: 30px;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: start;
+          -ms-flex-pack: start;
+              justify-content: start;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center; }
+      .site-content .container-site-content .hashtags a {
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 19px;
+        color: #175eca;
+        margin-right: 5px; }
+    .site-content .container-site-content .track-info {
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 19px;
+      color: #000000; }
+    .site-content .container-site-content .fal,
+    .site-content .container-site-content .fas {
+      margin-right: 5px; }
+    .site-content .container-site-content .down-play-block {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: start;
+          -ms-flex-pack: start;
+              justify-content: start;
+      -webkit-box-align: start;
+          -ms-flex-align: start;
+              align-items: flex-start;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      padding-top: 0; }
+      .site-content .container-site-content .down-play-block button {
+        width: 160px; }
+      .site-content .container-site-content .down-play-block .btn-2 {
+        margin-top: 15px; }
+    .site-content .container-site-content .plus-an-like {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: start;
+          -ms-flex-pack: start;
+              justify-content: start;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      color: #4231ab;
+      font-size: 28px;
+      cursor: pointer;
+      margin-top: 10px; }
+      .site-content .container-site-content .plus-an-like div {
+        margin-right: 15px; }
+      .site-content .container-site-content .plus-an-like .fal:hover,
+      .site-content .container-site-content .plus-an-like .far:hover {
+        color: #6958beff; }
+    .site-content .container-site-content .soc-sites {
+      padding-left: 30px;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: start;
+          -ms-flex-pack: start;
+              justify-content: start;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      font-size: 30px;
+      margin-bottom: 30px; }
+      .site-content .container-site-content .soc-sites div {
+        margin-right: 15px; }
+      .site-content .container-site-content .soc-sites .fab {
+        cursor: pointer; }
+      .site-content .container-site-content .soc-sites .fa-facebook-square {
+        color: #0c408d; }
+      .site-content .container-site-content .soc-sites .fa-vk {
+        color: #2174c9; }
+      .site-content .container-site-content .soc-sites .fa-odnoklassniki-square {
+        color: #c28b17; }
+      .site-content .container-site-content .soc-sites .fa-telegram {
+        color: #179ac2; }
+      .site-content .container-site-content .soc-sites .fa-whatsapp-square {
+        color: #218624; }
 
 .tracks {
   width: 100%;
@@ -301,5 +421,11 @@ header {
 
 footer {
   width: 100%;
-  height: 300px;
+  height: 180px;
   background: #4231ab; }
+  footer .corp {
+    color: #fff;
+    margin-top: 20px;
+    display: inline-block; }
+    footer .corp a {
+      margin-left: 5px; }

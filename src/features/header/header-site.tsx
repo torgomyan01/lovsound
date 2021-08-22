@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SearchBlock from '../search';
 import { useDispatch } from 'react-redux';
 import { setOpenModalLogin, setOpenModalRegister } from 'redux/modals';
+import { ALL_URL } from '../../utils/urls';
 
 function HeaderSite() {
     const dispatch = useDispatch();
@@ -19,9 +20,9 @@ function HeaderSite() {
                 <div className="container">
                     <div className="row justify-content-between">
                         <div className="col-7 menu-site">
-                            <Link to="#">Главная</Link>
-                            <Link to="#">Новинки</Link>
-                            <Link to="#">Популярные</Link>
+                            <Link to={ALL_URL.HOME}>Главная</Link>
+                            <Link to={ALL_URL.NEWS}>Новинки</Link>
+                            <Link to={ALL_URL.POPULAR_TRACK}>Популярные</Link>
                         </div>
                         <div className="col-4 login-and-reg">
                             <div className="login-reg-header">

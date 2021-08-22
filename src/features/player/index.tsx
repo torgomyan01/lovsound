@@ -1,35 +1,117 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { TRACK_URL } from '../../utils/all-api-url';
+import { setPlayingID, setStartPlay } from '../../redux/player';
+import ReactAudioPlayer from 'react-audio-player';
+
+function time_convert(num: number) {
+    const hours = Math.floor(num / 60);
+    const minutes = num % 60;
+    return `${hours.toFixed()}:${
+        minutes > 9 ? minutes.toFixed() : `0${minutes.toFixed()}`
+    }`;
+}
 
 function Player() {
-    const [volume, setVolume] = useState(true);
+    const dispatch = useDispatch();
+    const Player = useSelector((state: IPlayer) => state.Player);
+    const [trackTime, setTrackTime] = useState<string>('0:0');
+    const [trackLoading, setTrackLoading] = useState<number>(0);
+    // console.log(Player);
+    const [volume, setVolume] = useState(false);
+
+    const track: ITracksForPlayer | undefined = Player.playList.find(
+        (tracks: ITracksForPlayer) => tracks.id === Player.playingId
+    );
+    const trackUrl = `${TRACK_URL}/${track?.track.folder_name}/${track?.track.name}`;
+
+    let trackRef: any;
+    useEffect(() => {
+        if (Player.startPlay) {
+            trackRef.audioEl.current.play();
+        } else {
+            trackRef.audioEl.current.pause();
+        }
+    }, [Player]);
 
     function openCLoseVolume() {
         setVolume(!volume);
     }
 
+    function timeAudio(e: number) {
+        setTrackTime(time_convert(e));
+    }
+    function pauseTrack() {
+        dispatch(setStartPlay(false));
+    }
+    function playTrack() {
+        dispatch(setStartPlay(true));
+    }
+
+    function thisAudio(e: any) {
+        trackRef = e;
+        const percentLoading =
+            (100 * e?.audioEl?.current.currentTime) /
+            e?.audioEl?.current.duration;
+        setTrackLoading(percentLoading);
+    }
+
+    function trackNext() {
+        if (Player.playingId < Player.playList.length) {
+            dispatch(setPlayingID(Player.playingId + 1));
+        }
+    }
+
+    function prevTrack() {
+        if (Player.playingId > 0) {
+            dispatch(setPlayingID(Player.playingId - 1));
+        }
+    }
+    function trackTimeMove(e: any) {
+        const percentPlay =
+            (e.nativeEvent.offsetX * e.target.getBoundingClientRect().width) /
+            100;
+        const percentLoading =
+            (trackRef?.audioEl?.current.duration * percentPlay) / 100;
+        console.log(trackRef?.audioEl?.current?.currentTime);
+    }
     return (
         <div className="player">
+            <ReactAudioPlayer
+                ref={thisAudio}
+                onListen={timeAudio}
+                listenInterval={1000}
+                src={trackUrl}
+                muted={volume}
+                autoPlay={Player.startPlay}
+                // controls
+            />
             <div className="container container-player">
                 <div className="button-player">
-                    <i className="fas fa-chevron-left" />
+                    <i className="fas fa-chevron-left" onClick={prevTrack} />
                 </div>
                 <div className="button-player">
-                    <i className="fas fa-play" />
+                    {Player.startPlay ? (
+                        <i className="far fa-pause" onClick={pauseTrack} />
+                    ) : (
+                        <i className="fas fa-play" onClick={playTrack} />
+                    )}
                 </div>
                 <div className="button-player">
-                    <i className="fas fa-chevron-right" />
+                    <i className="fas fa-chevron-right" onClick={trackNext} />
                 </div>
                 <div className="loading-player">
-                    <div className="title-player">
-                        SHAMI & Camila Elens - I need your love
-                    </div>
-                    <div className="loading">
-                        <div className="progress-player" />
+                    <div className="title-player">{track?.track.title}</div>
+                    <div className="loading" onClick={trackTimeMove}>
+                        <div
+                            className="progress-player"
+                            style={{ width: `${trackLoading}%` }}
+                        />
                     </div>
                 </div>
-                <div className="time">1:32</div>
+                <div className="time">{trackTime}</div>
                 <div className="button-player">
-                    {volume ? (
+                    {!volume ? (
                         <i
                             className="far fa-volume"
                             onClick={openCLoseVolume}

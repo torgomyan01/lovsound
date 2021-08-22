@@ -143,6 +143,21 @@ header {
         border-right: 1px solid $border-color;
         border-left: 1px solid $border-color;
         padding: 0;
+        .block-name-and-map-url {
+            margin-top: 70px;
+            display: inline-block;
+            .body-name-and-map-url {
+                width: 100%;
+                @include d-flex('s-c');
+                .title-content {
+                    margin-top: 0;
+                }
+                .breadcrumb-block {
+                    margin-left: 40px;
+                    margin-bottom: 28px;
+                }
+            }
+        }
         .title-content {
             display: inline-block;
             margin-top: 70px;
@@ -153,6 +168,9 @@ header {
             position: relative;
             margin-bottom: 30px;
             padding-left: 30px;
+            &.track-view {
+                margin-top: 0;
+            }
             &:before {
                 content: '';
                 position: absolute;
@@ -161,6 +179,96 @@ header {
                 left: 30px;
                 bottom: -5px;
                 background: $c-blue;
+            }
+        }
+        .track-name-view {
+            font-weight: bold;
+            font-size: 25px;
+            line-height: 29px;
+            color: #000000;
+            padding-left: 30px;
+        }
+        .track-view-info {
+            padding-left: 30px;
+            margin-top: 20px;
+        }
+        .hashtags {
+            padding-left: 30px;
+            @include d-flex('s-c');
+            a {
+                font-weight: normal;
+                font-size: 16px;
+                line-height: 19px;
+                color: #175eca;
+                margin-right: 5px;
+            }
+        }
+        .track-info {
+            font-weight: normal;
+            font-size: 16px;
+            line-height: 19px;
+            color: #000000;
+        }
+        .fal,
+        .fas {
+            margin-right: 5px;
+        }
+        .down-play-block {
+            display: flex;
+            justify-content: start;
+            align-items: flex-start;
+            flex-direction: column;
+            padding-top: 0;
+            button {
+                width: 160px;
+            }
+            .btn-2 {
+                margin-top: 15px;
+            }
+        }
+        .plus-an-like {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            color: $c-blue;
+            font-size: 28px;
+            cursor: pointer;
+            margin-top: 10px;
+            div {
+                margin-right: 15px;
+            }
+            .fal,
+            .far {
+                &:hover {
+                    color: #6958beff;
+                }
+            }
+        }
+        .soc-sites {
+            padding-left: 30px;
+            @include d-flex('s-c');
+            font-size: 30px;
+            margin-bottom: 30px;
+            div {
+                margin-right: 15px;
+            }
+            .fab {
+                cursor: pointer;
+            }
+            .fa-facebook-square {
+                color: #0c408d;
+            }
+            .fa-vk {
+                color: #2174c9;
+            }
+            .fa-odnoklassniki-square {
+                color: #c28b17;
+            }
+            .fa-telegram {
+                color: #179ac2;
+            }
+            .fa-whatsapp-square {
+                color: #218624;
             }
         }
     }
@@ -293,6 +401,14 @@ header {
 
 footer {
     width: 100%;
-    height: 300px;
+    height: 180px;
     background: $c-blue;
+    .corp {
+        color: #fff;
+        margin-top: 20px;
+        display: inline-block;
+        a {
+            margin-left: 5px;
+        }
+    }
 }
