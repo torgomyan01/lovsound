@@ -31,7 +31,7 @@ function App() {
         <>
             <Route path={ALL_URL.HOME} exact component={HomPage} />
             <Route path={ALL_URL.NEWS} exact component={NewTracks} />
-            <Route path={ALL_URL.TRACK_VIEW} exact component={TrackView} />
+            <Route path={ALL_URL.TRACK_VIEW} component={TrackView} />
             <Route
                 path={ALL_URL.POPULAR_TRACK}
                 exact

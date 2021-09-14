@@ -10,6 +10,7 @@ interface IThisProps {
 }
 
 function Tracks({ track }: IThisProps) {
+    console.log(track);
     const dispatch = useDispatch();
     const Player = useSelector((state: IPlayer) => state.Player);
     const trackUrl = `${TRACK_URL}/${track.track.folder_name}/${track.track.name}`;
@@ -26,6 +27,12 @@ function Tracks({ track }: IThisProps) {
     function PauseTrack() {
         dispatch(setStartPlay(false));
     }
+    const trackName = track.track.title
+        .replace(/[&\\/#,+()$~%.'":*?<>{}]/g, '')
+        .replace(/ /g, '-')
+        .replace(/---/g, '-')
+        .replace(/--/g, '-')
+        .toLowerCase();
 
     return (
         <div className="tracks">
@@ -37,7 +44,9 @@ function Tracks({ track }: IThisProps) {
                         <i className="fas fa-play" onClick={StartPlayTrack} />
                     )}
                 </div>
-                <Link to={ALL_URL.TRACK_VIEW} className="title-track">
+                <Link
+                    to={`/sound/${track.track.id}/${trackName}`}
+                    className="title-track">
                     {track.track.title.replace(/.mp3/g, '')}
                 </Link>
             </div>

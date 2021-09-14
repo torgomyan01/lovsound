@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setOpenModalLogin } from 'redux/modals';
 import { Button, makeStyles, TextField } from '@material-ui/core';
 import { LoginUser } from 'all-api/all-api';
+import { addIdUserLocalStorage } from '../../utils/helpers';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,14 +31,13 @@ function ModalLogin() {
 
     function startLogin(e: any) {
         e.preventDefault();
-        console.log(loginEmail, passwordName);
         const data = new FormData();
         data.append('email', loginEmail);
         data.append('password', passwordName);
 
         LoginUser(data)
             .then((res) => {
-                console.log(res);
+                addIdUserLocalStorage(res.data?.idu);
             })
             .catch((err) => {
                 console.log(err);
