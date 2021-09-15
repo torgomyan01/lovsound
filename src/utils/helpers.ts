@@ -15,14 +15,26 @@ export const validateEmail = (email: string) => {
     return re.test(String(email).toLowerCase());
 };
 
-export const addIdUserLocalStorage = (idUser: string) => {
-    localStorage.setItem('userId', idUser);
+export const addIdUserLocalStorage = (User: IUser) => {
+    localStorage.setItem('userId', User.idu);
+    localStorage.setItem('userInfo', JSON.stringify(User));
     localStorage.setItem('isLogin', 'true');
 };
 
 export const isLoginUser = () => {
-    const isLogin = localStorage.getItem('isLogin')
+    return localStorage.getItem('isLogin')
         ? !!localStorage.getItem('isLogin')
         : false;
-    return isLogin;
+};
+
+export const getUserId = () => {
+    return localStorage.getItem('userId')
+        ? Number(localStorage.getItem('userId'))
+        : false;
+};
+
+export const getUserInfo = () => {
+    return localStorage.getItem('userInfo')
+        ? JSON.parse(localStorage.getItem('userInfo') as string)
+        : false;
 };

@@ -15,6 +15,8 @@ import NewTracks from '../pages/new-tracks';
 import { GetAllTracks } from '../all-api/all-api';
 import { setAllTracks } from '../redux/all-tracks';
 import { useDispatch } from 'react-redux';
+import { getUserId, getUserInfo, isLoginUser } from '../utils/helpers';
+import { setIsLogin, setUserId, setUserInfo } from '../redux/user';
 
 function App() {
     const dispatch = useDispatch();
@@ -27,6 +29,13 @@ function App() {
                 console.log(err);
             });
     }, []);
+
+    useEffect(() => {
+        dispatch(setUserId(getUserId()));
+        dispatch(setIsLogin(isLoginUser()));
+        dispatch(setUserInfo(getUserInfo()));
+    }, []);
+
     return (
         <>
             <Route path={ALL_URL.HOME} exact component={HomPage} />

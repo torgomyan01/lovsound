@@ -7,4 +7,3 @@ export const ALL_API_URL = {
     GET_TRACK: `${API_URL_NAME}/get-track.php`,
     ADD_VIEW_TRACK: `${API_URL_NAME}/add-view-track.php`
 };
-console.log(ALL_API_URL);

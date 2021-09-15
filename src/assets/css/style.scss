@@ -40,6 +40,10 @@ $border-color: rgba(0, 0, 0, 0.25);
     }
 }
 
+.line-height {
+    line-height: 0 !important;
+}
+
 header {
     width: 100%;
     height: 300px;
@@ -75,7 +79,7 @@ header {
         .fal {
             margin-right: 10px;
         }
-        a {
+        .login-reg {
             margin-left: 20px;
             font-style: normal;
             font-weight: normal;

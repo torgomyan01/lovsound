@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TRACK_URL } from '../../utils/all-api-url';
-import { setPlayingID, setStartPlay } from '../../redux/player';
+import { TRACK_URL } from 'utils/all-api-url';
+import { setPlayingID, setStartPlay } from 'redux/player';
 import ReactAudioPlayer from 'react-audio-player';
 
 function time_convert(num: number) {
@@ -17,13 +17,22 @@ function Player() {
     const Player = useSelector((state: IPlayer) => state.Player);
     const [trackTime, setTrackTime] = useState<string>('0:0');
     const [trackLoading, setTrackLoading] = useState<number>(0);
-    // console.log(Player);
     const [volume, setVolume] = useState(false);
 
-    const track: ITracksForPlayer | undefined = Player.playList.find(
-        (tracks: ITracksForPlayer) => tracks.id === Player.playingId
+    const AllTracks = useSelector(
+        (state: IAllTracksGet) => state.AllTracks.allTracks
     );
-    const trackUrl = `${TRACK_URL}/${track?.track.folder_name}/${track?.track.name}`;
+
+    const [track, setTrack] = useState<IAllTracks>();
+    useEffect(() => {
+        const currentTrack = AllTracks.find(
+            (checkedTrack: IAllTracks) =>
+                Number(checkedTrack.id) === Player.playingId
+        );
+        setTrack(currentTrack);
+    }, [AllTracks, Player]);
+
+    const trackUrl = `${TRACK_URL}/${track?.folder_name}/${track?.name}`;
 
     let trackRef: any;
     useEffect(() => {
@@ -57,15 +66,11 @@ function Player() {
     }
 
     function trackNext() {
-        if (Player.playingId < Player.playList.length) {
-            dispatch(setPlayingID(Player.playingId + 1));
-        }
+        dispatch(setPlayingID(Player.playingId - 1));
     }
 
     function prevTrack() {
-        if (Player.playingId > 0) {
-            dispatch(setPlayingID(Player.playingId - 1));
-        }
+        dispatch(setPlayingID(Player.playingId + 1));
     }
     function trackTimeMove(e: any) {
         const percentPlay =
@@ -101,7 +106,7 @@ function Player() {
                     <i className="fas fa-chevron-right" onClick={trackNext} />
                 </div>
                 <div className="loading-player">
-                    <div className="title-player">{track?.track.title}</div>
+                    <div className="title-player">{track?.title}</div>
                     <div className="loading" onClick={trackTimeMove}>
                         <div
                             className="progress-player"

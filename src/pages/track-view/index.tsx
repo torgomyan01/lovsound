@@ -3,17 +3,24 @@ import HeaderFooter from 'features/header-footer';
 import { Breadcrumbs, Button, Link, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 import { AddViewTrack, GetTracks } from '../../all-api/all-api';
+import { setPlayingID, setPlayList, setStartPlay } from '../../redux/player';
+import { useDispatch, useSelector } from 'react-redux';
 
 function TrackView() {
+    const dispatch = useDispatch();
     const { trackId }: { trackId: string } = useParams();
-    console.log(trackId);
+
+    const AllTracks = useSelector(
+        (state: IAllTracksGet) => state.AllTracks.allTracks
+    );
 
     const [trackInfo, setTrackInfo] = useState<IAllTracks>();
     useEffect(() => {
-        GetTracks(trackId).then((res) => {
-            setTrackInfo(res.data[0]);
-        });
-    }, [trackId]);
+        const currentTrack = AllTracks.find(
+            (track: IAllTracks) => track.id === trackId
+        );
+        setTrackInfo(currentTrack);
+    }, [trackId, AllTracks]);
 
     const TrackSize = (Number(trackInfo?.size) / 1024 / 1024).toFixed();
     const trackUrl = `https://lovsound.com/uploads/tracks/${trackInfo?.folder_name}/${trackInfo?.name}`;
@@ -25,12 +32,15 @@ function TrackView() {
     useEffect(() => {
         if (trackInfo?.name) {
             const trackAddView = Number(trackInfo.views) + 1;
-            AddViewTrack(trackId, String(trackAddView)).then((res) => {
-                console.log(res);
-            });
+            AddViewTrack(trackId, String(trackAddView)).then();
         }
     }, [trackInfo]);
 
+    function playCurrentTrack() {
+        console.log(trackInfo);
+        dispatch(setStartPlay(true));
+        dispatch(setPlayingID(Number(trackInfo?.id)));
+    }
     return (
         <HeaderFooter>
             <div className="site-content">
@@ -84,6 +94,7 @@ function TrackView() {
                             <Button
                                 variant="outlined"
                                 className="btn-2"
+                                onClick={playCurrentTrack}
                                 color="secondary">
                                 <i className="fas fa-play" />
                                 Слушать

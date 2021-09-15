@@ -19,11 +19,6 @@ declare interface IAllTracksGet {
     };
 }
 
-declare interface ITracksForPlayer {
-    id: number;
-    track: IAllTracks;
-}
-
 declare interface IAllTracks {
     description: string;
     download: string;
@@ -44,7 +39,26 @@ declare interface IAllTracks {
 declare interface IPlayer {
     Player: {
         startPlay: boolean;
-        playList: ITracksForPlayer[];
+        playList: IAllTracks[];
         playingId: number;
+    };
+}
+
+declare interface IUser {
+    city: string;
+    country: string;
+    date: string;
+    description: string;
+    email: string;
+    first_name: string;
+    idu: string;
+    last_name: string;
+}
+
+declare interface IAuth {
+    AuthSite: {
+        userID: number | null;
+        isLogin: boolean;
+        userInfo: IUser | null;
     };
 }

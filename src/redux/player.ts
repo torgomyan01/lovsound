@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface IPlayer {
     startPlay: boolean;
-    playList: ITracksForPlayer[];
+    playList: IAllTracks[];
     playingId: number;
 }
 const initialState: IPlayer = {

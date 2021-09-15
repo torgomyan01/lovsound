@@ -11,7 +11,6 @@ function HomPage() {
         (state: IAllTracksGet) => state.AllTracks.allTracks
     );
     const [thisPLayLists, setThisPLayLists] = useState<IAllTracks[]>([]);
-    let trackId = 0;
     useEffect(() => {
         StartPlayList();
     }, [AllTracks]);
@@ -19,14 +18,8 @@ function HomPage() {
     function StartPlayList() {
         setThisPLayLists([]);
         dispatch(setPlayList([]));
-        AllTracks.slice(0, 30).map((tracks: IAllTracks) => {
-            const track = {
-                id: trackId,
-                track: tracks
-            };
-            setThisPLayLists((oldTrack: any) => [...oldTrack, track]);
-            trackId++;
-        });
+        const homeTrack = AllTracks.slice(0, 30);
+        setThisPLayLists(homeTrack);
     }
     useEffect(() => {
         dispatch(setPlayList([]));
