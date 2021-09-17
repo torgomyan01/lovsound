@@ -16,6 +16,11 @@ export const GetTracks = (trackID: string) => {
     return axios.get(`${ALL_API_URL.GET_TRACK}?trackID=${trackID}`);
 };
 
+// GET ALL MY LIKES
+export const GetMyAllLikes = (userID: string) => {
+    return axios.get(`${ALL_API_URL.ALL_LIKES}?userId=${userID}`);
+};
+
 // ADD VIEW TRACK
 export const AddViewTrack = (trackID: string, viewCount: string) => {
     const formData = new FormData();

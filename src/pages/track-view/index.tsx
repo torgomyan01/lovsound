@@ -5,14 +5,30 @@ import { useParams } from 'react-router-dom';
 import { AddViewTrack, GetTracks } from '../../all-api/all-api';
 import { setPlayingID, setPlayList, setStartPlay } from '../../redux/player';
 import { useDispatch, useSelector } from 'react-redux';
+import { setOpenModalLogin } from '../../redux/modals';
 
 function TrackView() {
     const dispatch = useDispatch();
     const { trackId }: { trackId: string } = useParams();
+    const AllLikes = useSelector((state: IAllLikes) => state.AllLikes.AllLikes);
+    const isLogin = useSelector((state: IAuth) => state.AuthSite.isLogin);
+    const UserInfo = useSelector((state: IAuth) => state.AuthSite.userInfo);
 
     const AllTracks = useSelector(
         (state: IAllTracksGet) => state.AllTracks.allTracks
     );
+
+    const [trackLike, setTrackLike] = useState(false);
+
+    console.log(trackLike);
+    useEffect(() => {
+        if (isLogin) {
+            const ViewLike: any = AllLikes.some(
+                (like: ILikes) => like.by === UserInfo?.idu
+            );
+            setTrackLike(ViewLike);
+        }
+    }, [AllLikes]);
 
     const [trackInfo, setTrackInfo] = useState<IAllTracks>();
     useEffect(() => {
@@ -41,6 +57,16 @@ function TrackView() {
         dispatch(setStartPlay(true));
         dispatch(setPlayingID(Number(trackInfo?.id)));
     }
+
+    function plusTrack() {
+        if (isLogin) {
+            console.log('aaaa');
+            return;
+        } else {
+            dispatch(setOpenModalLogin(true));
+        }
+    }
+
     return (
         <HeaderFooter>
             <div className="site-content">
@@ -100,8 +126,12 @@ function TrackView() {
                                 Слушать
                             </Button>
                             <div className="plus-an-like">
-                                <div>
-                                    <i className="fal fa-plus" />
+                                <div onClick={plusTrack}>
+                                    <i
+                                        className={`fal fa-plus ${
+                                            trackLike && 'c-pink'
+                                        }`}
+                                    />
                                 </div>
                                 <div>
                                     <i className="far fa-thumbs-up" />

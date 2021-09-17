@@ -7,6 +7,8 @@ import { ALL_URL } from 'utils/urls';
 import { Avatar, makeStyles } from '@material-ui/core';
 import { deepPurple } from '@material-ui/core/colors';
 import { Dropdown } from 'react-bootstrap';
+import { setIsLogin, setUserId, setUserInfo } from 'redux/user';
+import { RemoveIdUserLocalStorage } from 'utils/helpers';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,6 +36,15 @@ function HeaderSite() {
     function openModalRegister() {
         dispatch(setOpenModalRegister(true));
     }
+
+    function logoutSite(e: any) {
+        e.preventDefault();
+        dispatch(setUserId(''));
+        dispatch(setIsLogin(false));
+        dispatch(setUserInfo({}));
+        RemoveIdUserLocalStorage();
+    }
+
     return (
         <header>
             <div className="header-bg">
@@ -70,7 +81,9 @@ function HeaderSite() {
                                                 <i className="fas fa-file-download mr-2" />
                                                 Скачивание
                                             </Dropdown.Item>
-                                            <Dropdown.Item href="#/action-3">
+                                            <Dropdown.Item
+                                                href="#"
+                                                onClick={logoutSite}>
                                                 <i className="fal fa-sign-out mr-2" />
                                                 Выйти
                                             </Dropdown.Item>

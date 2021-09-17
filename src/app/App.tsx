@@ -12,11 +12,12 @@ import ModalRegister from 'features/moad-register/modal-register';
 import TrackView from '../pages/track-view';
 import PopularTracks from '../pages/papular-tracks';
 import NewTracks from '../pages/new-tracks';
-import { GetAllTracks } from '../all-api/all-api';
+import { GetAllTracks, GetMyAllLikes } from '../all-api/all-api';
 import { setAllTracks } from '../redux/all-tracks';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUserId, getUserInfo, isLoginUser } from '../utils/helpers';
 import { setIsLogin, setUserId, setUserInfo } from '../redux/user';
+import { setAllLikes } from '../redux/all-likes';
 
 function App() {
     const dispatch = useDispatch();
@@ -35,6 +36,16 @@ function App() {
         dispatch(setIsLogin(isLoginUser()));
         dispatch(setUserInfo(getUserInfo()));
     }, []);
+
+    const UserInfo = useSelector((state: IAuth) => state.AuthSite.userInfo);
+    const isLogin = useSelector((state: IAuth) => state.AuthSite.isLogin);
+    useEffect(() => {
+        if (isLogin && UserInfo?.idu) {
+            GetMyAllLikes(String(UserInfo.idu)).then((res) => {
+                dispatch(setAllLikes(res.data));
+            });
+        }
+    }, [UserInfo, isLogin]);
 
     return (
         <>

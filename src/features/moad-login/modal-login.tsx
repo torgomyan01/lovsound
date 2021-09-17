@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Modal, Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOpenModalLogin } from 'redux/modals';
 import { Button, makeStyles, TextField } from '@material-ui/core';
@@ -26,17 +26,21 @@ function ModalLogin() {
     }
     const classes = useStyles();
 
+    const [loading, setLoading] = useState(false);
     const [loginEmail, setLoginEmail] = useState<string>('');
     const [passwordName, setPasswordName] = useState<string>('');
 
     function startLogin(e: any) {
         e.preventDefault();
+        setLoading(true);
         const data = new FormData();
         data.append('email', loginEmail);
         data.append('password', passwordName);
 
         LoginUser(data).then((res) => {
             addIdUserLocalStorage(res.data);
+            setLoading(false);
+            window.location.reload();
         });
     }
     return (
@@ -76,7 +80,15 @@ function ModalLogin() {
                                 variant="outlined"
                                 type="submit"
                                 color="secondary">
-                                <i className="fal fa-sign-in mr-2" />
+                                {loading ? (
+                                    <Spinner
+                                        size="sm"
+                                        animation="border"
+                                        variant="danger"
+                                    />
+                                ) : (
+                                    <i className="fal fa-sign-in mr-2" />
+                                )}
                                 Войти
                             </Button>
                         </div>

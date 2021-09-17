@@ -21,6 +21,12 @@ export const addIdUserLocalStorage = (User: IUser) => {
     localStorage.setItem('isLogin', 'true');
 };
 
+export const RemoveIdUserLocalStorage = () => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('isLogin');
+};
+
 export const isLoginUser = () => {
     return localStorage.getItem('isLogin')
         ? !!localStorage.getItem('isLogin')

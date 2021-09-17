@@ -35,6 +35,18 @@ declare interface IAllTracks {
     uid: string;
     views: string;
 }
+declare interface IAllLikes {
+    AllLikes: {
+        AllLikes: ILikes[];
+    };
+}
+
+declare interface ILikes {
+    by: string;
+    id: string;
+    time: string;
+    track: string;
+}
 
 declare interface IPlayer {
     Player: {
