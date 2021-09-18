@@ -57,14 +57,9 @@ declare interface IPlayer {
 }
 
 declare interface IUser {
-    city: string;
-    country: string;
-    date: string;
-    description: string;
     email: string;
-    first_name: string;
+    username: string;
     idu: string;
-    last_name: string;
 }
 
 declare interface IAuth {

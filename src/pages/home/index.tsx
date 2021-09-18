@@ -15,6 +15,15 @@ function HomPage() {
         StartPlayList();
     }, [AllTracks]);
 
+    useEffect(() => {
+        if (AllTracks.length > 0) {
+            const newTracks = AllTracks.slice()
+                .sort((a, b) => Number(b.views) - Number(a.views))
+                .slice(0, 30);
+            setThisPLayLists(newTracks);
+        }
+    }, [AllTracks]);
+
     function StartPlayList() {
         setThisPLayLists([]);
         dispatch(setPlayList([]));

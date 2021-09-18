@@ -1,7 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import Tracks from '../tracks-block/tracks';
+import * as randomstring from 'randomstring';
 
 function SearchBlock() {
+    const AllTracks = useSelector(
+        (state: IAllTracksGet) => state.AllTracks.allTracks
+    );
+
     const [searching, setSearching] = useState('');
+    const [result, setResult] = useState<IAllTracks[]>([]);
+    useEffect(() => {
+        const resultTrack = AllTracks.filter((track: IAllTracks) =>
+            track.title.toLowerCase().includes(searching.toLowerCase())
+        );
+        setResult(resultTrack);
+    }, [searching]);
+
     return (
         <div className="search">
             <div className="search-block">
@@ -27,7 +42,18 @@ function SearchBlock() {
                     )}
                 </label>
             </div>
-            {searching && <div className="searching-block">test</div>}
+            {searching && (
+                <div className="searching-block">
+                    {result.slice(0, 30).map((track: IAllTracks) => {
+                        return (
+                            <Tracks
+                                key={randomstring.generate(30)}
+                                track={track}
+                            />
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 }

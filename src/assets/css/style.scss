@@ -9,6 +9,29 @@
     //transition: 0.1s;
     font-family: 'Roboto', sans-serif;
 }
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #4231ab;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #6853e3;
+}
+
 a:hover {
     text-decoration: none !important;
 }
@@ -75,6 +98,10 @@ header {
                 transform: translateY(1px);
                 border-bottom: 2px solid #fff;
             }
+            &.active {
+                transform: translateY(1px);
+                border-bottom: 2px solid #fff;
+            }
         }
     }
     .login-and-reg {
@@ -108,6 +135,12 @@ header {
         border-radius: 10px;
         position: relative;
         overflow: hidden;
+        @media (max-width: 992px) {
+            @include col(10);
+        }
+        @media (max-width: 500px) {
+            @include col(11);
+        }
         label {
             width: 100%;
             height: 100%;
@@ -133,7 +166,7 @@ header {
     }
     .searching-block {
         @include col(6);
-        height: 300px;
+        height: 400px;
         background: #fff;
         position: absolute;
         left: 50%;
@@ -142,6 +175,7 @@ header {
         box-shadow: 6px 6px 25px rgba(0, 0, 0, 0.25);
         border-radius: 8px;
         z-index: 1;
+        overflow: auto;
     }
 }
 .site-content {
@@ -339,6 +373,12 @@ header {
     }
 }
 
+.row {
+    @media (max-width: 576px) {
+        margin-right: 0;
+    }
+}
+
 .player {
     width: 100%;
     height: 80px;
@@ -347,6 +387,7 @@ header {
     left: 0;
     background: $c-blue;
     border-top: 1px solid #fff;
+    z-index: 1;
     .container-player {
         height: 100%;
         @include d-flex('s-c');
@@ -368,6 +409,9 @@ header {
             width: calc(100% - 200px);
             position: relative;
             top: -9px;
+            @media (max-width: 576px) {
+                display: none;
+            }
             .title-player {
                 font-weight: normal;
                 font-size: 14px;
@@ -419,4 +463,11 @@ footer {
             margin-left: 5px;
         }
     }
+}
+#menu-register-user {
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.makeStyles-purple-6 {
+    color: rgba(255, 255, 255, 0.85);
 }

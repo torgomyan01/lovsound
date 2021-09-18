@@ -5,6 +5,7 @@ import { setOpenModalLogin } from 'redux/modals';
 import { Button, makeStyles, TextField } from '@material-ui/core';
 import { LoginUser } from 'all-api/all-api';
 import { addIdUserLocalStorage } from 'utils/helpers';
+import { openAlert, setMessageAlert } from '../../redux/alert-site';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,9 +39,16 @@ function ModalLogin() {
         data.append('password', passwordName);
 
         LoginUser(data).then((res) => {
-            addIdUserLocalStorage(res.data);
-            setLoading(false);
-            window.location.reload();
+            console.log(res.data);
+            if (res.data === 0) {
+                setLoading(false);
+                dispatch(openAlert(true));
+                dispatch(setMessageAlert('Incorrect login or password'));
+            } else {
+                addIdUserLocalStorage(res.data);
+                setLoading(false);
+                window.location.reload();
+            }
         });
     }
     return (
@@ -85,6 +93,7 @@ function ModalLogin() {
                                         size="sm"
                                         animation="border"
                                         variant="danger"
+                                        className="mr-2"
                                     />
                                 ) : (
                                     <i className="fal fa-sign-in mr-2" />

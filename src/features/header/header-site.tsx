@@ -45,15 +45,37 @@ function HeaderSite() {
         RemoveIdUserLocalStorage();
     }
 
+    const pathName: string = window.location.pathname;
+
     return (
         <header>
             <div className="header-bg">
                 <div className="container">
                     <div className="row justify-content-between">
                         <div className="col-7 menu-site">
-                            <Link to={ALL_URL.HOME}>Главная</Link>
-                            <Link to={ALL_URL.NEWS}>Новинки</Link>
-                            <Link to={ALL_URL.POPULAR_TRACK}>Популярные</Link>
+                            <Link
+                                className={pathName === '/' ? 'active' : ''}
+                                to={ALL_URL.HOME}>
+                                Главная
+                            </Link>
+                            <Link
+                                className={
+                                    pathName.includes(ALL_URL.NEWS)
+                                        ? 'active'
+                                        : ''
+                                }
+                                to={ALL_URL.NEWS}>
+                                Новинки
+                            </Link>
+                            <Link
+                                className={
+                                    pathName.includes(ALL_URL.POPULAR_TRACK)
+                                        ? 'active'
+                                        : ''
+                                }
+                                to={ALL_URL.POPULAR_TRACK}>
+                                Популярные
+                            </Link>
                         </div>
                         <div className="col-4 login-and-reg">
                             {isLogin ? (
@@ -64,7 +86,8 @@ function HeaderSite() {
                                             className="p-0 line-height"
                                             id="menu-register-user">
                                             <Avatar className={classes.purple}>
-                                                {UserInfo?.first_name[0]}
+                                                {UserInfo?.username[0] &&
+                                                    UserInfo?.username[0]}
                                             </Avatar>
                                         </Dropdown.Toggle>
 
@@ -77,10 +100,12 @@ function HeaderSite() {
                                                 <i className="far fa-thumbs-up mr-2" />
                                                 Понравившиеся
                                             </Dropdown.Item>
-                                            <Dropdown.Item href="#/action-3">
+                                            <Link
+                                                to={ALL_URL.MY_DOWNLOAD}
+                                                className="dropdown-item">
                                                 <i className="fas fa-file-download mr-2" />
                                                 Скачивание
-                                            </Dropdown.Item>
+                                            </Link>
                                             <Dropdown.Item
                                                 href="#"
                                                 onClick={logoutSite}>

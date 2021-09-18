@@ -1,11 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import HeaderFooter from 'features/header-footer';
 import { Breadcrumbs, Button, Link, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
-import { AddViewTrack, GetTracks } from '../../all-api/all-api';
-import { setPlayingID, setPlayList, setStartPlay } from '../../redux/player';
+import {
+    AddDownloadTrack,
+    AddMyLike,
+    AddViewTrack,
+    GetMyAllLikes,
+    RemoveMyLike
+} from 'all-api/all-api';
+import { setPlayingID, setStartPlay } from 'redux/player';
 import { useDispatch, useSelector } from 'react-redux';
-import { setOpenModalLogin } from '../../redux/modals';
+import { setOpenModalLogin } from 'redux/modals';
+import { Spinner } from 'react-bootstrap';
+import { setAllLikes } from 'redux/all-likes';
+import Tracks from '../../features/tracks-block/tracks';
+import randomstring from 'randomstring';
+import { openAlert, setMessageAlert } from 'redux/alert-site';
+import FileDownload from 'js-file-download';
 
 function TrackView() {
     const dispatch = useDispatch();
@@ -19,12 +31,13 @@ function TrackView() {
     );
 
     const [trackLike, setTrackLike] = useState(false);
+    const [trackLikeLoading, setTrackLikeLoading] = useState(false);
 
-    console.log(trackLike);
     useEffect(() => {
-        if (isLogin) {
+        if (isLogin && AllLikes.length > 0) {
             const ViewLike: any = AllLikes.some(
-                (like: ILikes) => like.by === UserInfo?.idu
+                (like: ILikes) =>
+                    like.track === trackId && like.by === UserInfo?.idu
             );
             setTrackLike(ViewLike);
         }
@@ -41,8 +54,25 @@ function TrackView() {
     const TrackSize = (Number(trackInfo?.size) / 1024 / 1024).toFixed();
     const trackUrl = `https://lovsound.com/uploads/tracks/${trackInfo?.folder_name}/${trackInfo?.name}`;
 
-    function startDownloadTrack() {
-        window.open(trackUrl, '_blank');
+    function startDownloadTrack(e: any) {
+        e.preventDefault();
+        if (isLogin) {
+            if (UserInfo?.idu && trackInfo?.id) {
+                dispatch(openAlert(true));
+                dispatch(setMessageAlert('Please Wait'));
+
+                const formData = new FormData();
+                formData.append('userID', UserInfo.idu);
+                formData.append('trackID', trackInfo.id);
+                AddDownloadTrack(formData).then(() => {});
+            } else {
+                dispatch(openAlert(true));
+                dispatch(setMessageAlert('Error'));
+            }
+        }
+        FileDownload(trackUrl, `${trackInfo?.title}.mp3`);
+        dispatch(openAlert(true));
+        dispatch(setMessageAlert('Thank you, your track downloaded'));
     }
 
     useEffect(() => {
@@ -58,14 +88,57 @@ function TrackView() {
         dispatch(setPlayingID(Number(trackInfo?.id)));
     }
 
-    function plusTrack() {
-        if (isLogin) {
-            console.log('aaaa');
-            return;
+    function LikeTrack() {
+        if (isLogin && UserInfo) {
+            setTrackLikeLoading(true);
+            const formData = new FormData();
+            formData.append('userID', UserInfo.idu);
+            formData.append('trackID', trackId);
+            if (trackLike) {
+                RemoveMyLike(formData).then((res) => {
+                    if (res.data === 1) {
+                        setTrackLike(false);
+                        setTrackLikeLoading(false);
+                        GetMyAllLikes(String(UserInfo.idu)).then((res) => {
+                            dispatch(setAllLikes(res.data));
+                        });
+                    }
+                });
+            } else {
+                AddMyLike(formData).then((res) => {
+                    if (res.data === 1) {
+                        setTrackLike(true);
+                        setTrackLikeLoading(false);
+                        GetMyAllLikes(String(UserInfo.idu)).then((res) => {
+                            dispatch(setAllLikes(res.data));
+                        });
+                    }
+                });
+            }
         } else {
             dispatch(setOpenModalLogin(true));
         }
     }
+
+    const [RecommendYou, steRecommendYou] = useState<IAllTracks[]>([]);
+
+    useEffect(() => {
+        const trackName: string[] | undefined = trackInfo?.title
+            .replace(/[&\\/#,+()$~%.'":*?<>{}-]/g, '')
+            .replace(/ {2}/g, ' ')
+            .split(' ');
+        const recTrackArr: any = [];
+        trackName?.map((name: string) => {
+            if (name !== '') {
+                AllTracks.map((track: IAllTracks) => {
+                    if (track.title.includes(name)) {
+                        recTrackArr.push(track);
+                    }
+                });
+            }
+        });
+        steRecommendYou(recTrackArr);
+    }, [AllTracks, trackInfo]);
 
     return (
         <HeaderFooter>
@@ -93,7 +166,7 @@ function TrackView() {
                         <Link href="/hashtags/hip-hop">#Armenian,</Link>
                     </div>
                     <div className="row track-view-info">
-                        <div className="col-4">
+                        <div className="col-md-4">
                             <h5 className="track-info">
                                 Дата добавления: {trackInfo?.time}
                             </h5>
@@ -109,7 +182,7 @@ function TrackView() {
                                 Просмотры: {trackInfo?.views}
                             </h5>
                         </div>
-                        <div className="col-4 down-play-block">
+                        <div className="col-md-4 down-play-block">
                             <Button
                                 variant="outlined"
                                 color="primary"
@@ -126,15 +199,22 @@ function TrackView() {
                                 Слушать
                             </Button>
                             <div className="plus-an-like">
-                                <div onClick={plusTrack}>
-                                    <i
-                                        className={`fal fa-plus ${
-                                            trackLike && 'c-pink'
-                                        }`}
-                                    />
+                                <div onClick={LikeTrack}>
+                                    {trackLikeLoading ? (
+                                        <Spinner
+                                            animation="border"
+                                            variant="danger"
+                                        />
+                                    ) : (
+                                        <i
+                                            className={`fal fa-thumbs-up ${
+                                                trackLike && 'c-pink'
+                                            }`}
+                                        />
+                                    )}
                                 </div>
                                 <div>
-                                    <i className="far fa-thumbs-up" />
+                                    <i className="far fa-plus" />
                                 </div>
                             </div>
                         </div>
@@ -156,17 +236,15 @@ function TrackView() {
                             <i className="fab fa-whatsapp-square" />
                         </div>
                     </div>
-                    <h1 className="title-content">Популярные песни</h1>
-                    {/*<Tracks />*/}
-                    {/*<Tracks />*/}
-                    {/*<Tracks />*/}
-                    {/*<Tracks />*/}
-                    {/*<Tracks />*/}
-                    {/*<Tracks />*/}
-                    {/*<Tracks />*/}
-                    {/*<Tracks />*/}
-                    {/*<Tracks />*/}
-                    {/*<Tracks />*/}
+                    <h1 className="title-content">Рекомендуем вам</h1>
+                    {RecommendYou.splice(0, 30).map((track: IAllTracks) => {
+                        return (
+                            <Tracks
+                                key={randomstring.generate(30)}
+                                track={track}
+                            />
+                        );
+                    })}
                 </div>
             </div>
         </HeaderFooter>
