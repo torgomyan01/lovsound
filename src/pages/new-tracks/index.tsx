@@ -19,6 +19,10 @@ function NewTracks() {
         }
     }, [AllTracks]);
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <HeaderFooter>
             <div className="site-content">

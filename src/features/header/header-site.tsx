@@ -9,6 +9,7 @@ import { deepPurple } from '@material-ui/core/colors';
 import { Dropdown } from 'react-bootstrap';
 import { setIsLogin, setUserId, setUserInfo } from 'redux/user';
 import { RemoveIdUserLocalStorage } from 'utils/helpers';
+import MobileMenuSite from '../mobile-menu-site/header-site';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -51,8 +52,8 @@ function HeaderSite() {
         <header>
             <div className="header-bg">
                 <div className="container">
-                    <div className="row justify-content-between">
-                        <div className="col-7 menu-site">
+                    <div className="row justify-content-between nav-site-desktop">
+                        <div className="col-lg-7 menu-site">
                             <Link
                                 className={pathName === '/' ? 'active' : ''}
                                 to={ALL_URL.HOME}>
@@ -77,7 +78,7 @@ function HeaderSite() {
                                 Популярные
                             </Link>
                         </div>
-                        <div className="col-4 login-and-reg">
+                        <div className="col-lg-4 login-and-reg">
                             {isLogin ? (
                                 <>
                                     <Dropdown>
@@ -135,6 +136,7 @@ function HeaderSite() {
                             )}
                         </div>
                     </div>
+                    <MobileMenuSite />
                 </div>
             </div>
             <SearchBlock />

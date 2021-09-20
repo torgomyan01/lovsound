@@ -44,3 +44,11 @@ export const getUserInfo = () => {
         ? JSON.parse(localStorage.getItem('userInfo') as string)
         : false;
 };
+
+export const time_convert = (num: number) => {
+    const hours = Math.floor(num / 60);
+    const minutes = num % 60;
+    return `${hours.toFixed()}:${
+        minutes > 9 ? minutes.toFixed() : `0${minutes.toFixed()}`
+    }`;
+};

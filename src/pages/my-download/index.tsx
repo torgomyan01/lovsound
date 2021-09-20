@@ -6,6 +6,10 @@ import * as randomstring from 'randomstring';
 import { GetMyDownloads } from '../../all-api/all-api';
 
 function MyDownload() {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const AllTracks = useSelector(
         (state: IAllTracksGet) => state.AllTracks.allTracks
     );

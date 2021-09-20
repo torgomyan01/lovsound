@@ -18,7 +18,6 @@ function Tracks({ track }: IThisProps) {
     const UserInfo = useSelector((state: IAuth) => state.AuthSite.userInfo);
     const isLogin = useSelector((state: IAuth) => state.AuthSite.isLogin);
 
-    console.log(UserInfo?.idu);
     function startDownloadTrack(e: any) {
         e.preventDefault();
         if (isLogin) {
@@ -68,7 +67,7 @@ function Tracks({ track }: IThisProps) {
                     )}
                 </div>
                 <Link
-                    to={`/sound/${track.id}/${trackName}`}
+                    to={`/track/${track.id}/${trackName}`}
                     className="title-track">
                     {track.title.replace(/.mp3/g, '')}
                 </Link>

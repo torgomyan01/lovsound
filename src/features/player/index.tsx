@@ -1,16 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TRACK_URL } from 'utils/all-api-url';
 import { setPlayingID, setStartPlay } from 'redux/player';
-import ReactAudioPlayer from 'react-audio-player';
-
-function time_convert(num: number) {
-    const hours = Math.floor(num / 60);
-    const minutes = num % 60;
-    return `${hours.toFixed()}:${
-        minutes > 9 ? minutes.toFixed() : `0${minutes.toFixed()}`
-    }`;
-}
+import { time_convert } from 'utils/helpers';
 
 function Player() {
     const dispatch = useDispatch();
@@ -34,22 +26,20 @@ function Player() {
 
     const trackUrl = `${TRACK_URL}/${track?.folder_name}/${track?.name}`;
 
-    let trackRef: any;
+    const audioRef = useRef<any>();
+
     useEffect(() => {
         if (Player.startPlay) {
-            trackRef.audioEl.current.play();
+            audioRef.current.play();
         } else {
-            trackRef.audioEl.current.pause();
+            audioRef.current.pause();
         }
-    }, [Player]);
+    }, [Player, audioRef, trackUrl]);
 
     function openCLoseVolume() {
         setVolume(!volume);
     }
 
-    function timeAudio(e: number) {
-        setTrackTime(time_convert(e));
-    }
     function pauseTrack() {
         dispatch(setStartPlay(false));
     }
@@ -57,11 +47,10 @@ function Player() {
         dispatch(setStartPlay(true));
     }
 
-    function thisAudio(e: any) {
-        trackRef = e;
+    function thisAudio() {
+        setTrackTime(time_convert(audioRef.current.currentTime));
         const percentLoading =
-            (100 * e?.audioEl?.current.currentTime) /
-            e?.audioEl?.current.duration;
+            (100 * audioRef.current.currentTime) / audioRef.current.duration;
         setTrackLoading(percentLoading);
     }
 
@@ -74,22 +63,25 @@ function Player() {
     }
     function trackTimeMove(e: any) {
         const percentPlay =
-            (e.nativeEvent.offsetX * e.target.getBoundingClientRect().width) /
-            100;
-        const percentLoading =
-            (trackRef?.audioEl?.current.duration * percentPlay) / 100;
-        console.log(trackRef?.audioEl?.current?.currentTime);
+            (e.nativeEvent.offsetX * 100) /
+            e.target.getBoundingClientRect().width;
+        audioRef.current.currentTime =
+            (audioRef.current.duration * percentPlay) / 100;
     }
+
+    function endTrack() {
+        dispatch(setPlayingID(Number(Player.playingId + 1)));
+    }
+
     return (
         <div className="player">
-            <ReactAudioPlayer
-                ref={thisAudio}
-                onListen={timeAudio}
-                listenInterval={1000}
+            <audio
                 src={trackUrl}
+                ref={audioRef}
+                onTimeUpdate={thisAudio}
+                onEnded={endTrack}
                 muted={volume}
-                autoPlay={Player.startPlay}
-                // controls
+                hidden
             />
             <div className="container container-player">
                 <div className="button-player">
@@ -110,7 +102,7 @@ function Player() {
                     <div className="loading" onClick={trackTimeMove}>
                         <div
                             className="progress-player"
-                            style={{ width: `${trackLoading}%` }}
+                            style={{ left: `calc(${trackLoading}% - 10px)` }}
                         />
                     </div>
                 </div>

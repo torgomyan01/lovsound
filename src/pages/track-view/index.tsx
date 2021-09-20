@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import HeaderFooter from 'features/header-footer';
-import { Breadcrumbs, Button, Link, Typography } from '@material-ui/core';
-import { useParams } from 'react-router-dom';
+import { Breadcrumbs, Button, Typography } from '@material-ui/core';
+import { useParams, Link } from 'react-router-dom';
 import {
     AddDownloadTrack,
     AddMyLike,
@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setOpenModalLogin } from 'redux/modals';
 import { Spinner } from 'react-bootstrap';
 import { setAllLikes } from 'redux/all-likes';
-import Tracks from '../../features/tracks-block/tracks';
+import Tracks from 'features/tracks-block/tracks';
 import randomstring from 'randomstring';
 import { openAlert, setMessageAlert } from 'redux/alert-site';
 import FileDownload from 'js-file-download';
@@ -29,6 +29,10 @@ function TrackView() {
     const AllTracks = useSelector(
         (state: IAllTracksGet) => state.AllTracks.allTracks
     );
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const [trackLike, setTrackLike] = useState(false);
     const [trackLikeLoading, setTrackLikeLoading] = useState(false);
@@ -128,11 +132,16 @@ function TrackView() {
             .replace(/ {2}/g, ' ')
             .split(' ');
         const recTrackArr: any = [];
+        let oldAllTracks = AllTracks;
         trackName?.map((name: string) => {
             if (name !== '') {
-                AllTracks.map((track: IAllTracks) => {
+                oldAllTracks.map((track: IAllTracks, indexEmpty: number) => {
                     if (track.title.includes(name)) {
                         recTrackArr.push(track);
+                        oldAllTracks = oldAllTracks.filter(
+                            (tr: IAllTracks, index: number) =>
+                                index !== indexEmpty
+                        );
                     }
                 });
             }
@@ -149,11 +158,11 @@ function TrackView() {
                             <h1 className="title-content">Смотреть музыки</h1>
                             <div className="breadcrumb-block">
                                 <Breadcrumbs aria-label="breadcrumb">
-                                    <Link color="inherit" href="/">
+                                    <Link className="c-grey" to="/">
                                         Главная
                                     </Link>
-                                    <Typography color="textPrimary">
-                                        Армяанские
+                                    <Typography className="c-grey-op-5">
+                                        Новинки
                                     </Typography>
                                 </Breadcrumbs>
                             </div>
@@ -161,9 +170,9 @@ function TrackView() {
                     </div>
                     <h1 className="track-name-view">{trackInfo?.title}</h1>
                     <div className="hashtags">
-                        <Link href="/hashtags/hip-hop">#2021,</Link>
-                        <Link href="/hashtags/hip-hop">#hip-hop,</Link>
-                        <Link href="/hashtags/hip-hop">#Armenian,</Link>
+                        <Link to="/hashtags/hip-hop">#2021,</Link>
+                        <Link to="/hashtags/hip-hop">#hip-hop,</Link>
+                        <Link to="/hashtags/hip-hop">#Armenian,</Link>
                     </div>
                     <div className="row track-view-info">
                         <div className="col-md-4">

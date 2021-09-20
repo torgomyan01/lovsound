@@ -70,7 +70,12 @@ $border-color: rgba(0, 0, 0, 0.25);
 .line-height {
     line-height: 0 !important;
 }
-
+.c-grey {
+    color: #2f2f2f;
+}
+.c-grey-op-5 {
+    color: rgba(47, 47, 47, 0.77);
+}
 header {
     width: 100%;
     height: 300px;
@@ -80,6 +85,77 @@ header {
         width: 100%;
         height: 100%;
         background: #00000080;
+    }
+    @media (max-width: 576px) {
+        height: 150px;
+    }
+    .nav-site-desktop {
+        @media (max-width: 992px) {
+            display: none;
+        }
+    }
+    .mobile-menu-block-main {
+        display: none;
+        @media (max-width: 992px) {
+            display: block;
+        }
+    }
+    .menu-block-mobile {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        left: 10px;
+        top: 10px;
+        color: #fff;
+        font-size: 30px;
+        cursor: pointer;
+        @include d-flex('c-c');
+    }
+    .mobile-mnu-site {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100vh;
+        background: rgba(66, 49, 171, 0.92);
+        z-index: 1;
+        transition: 0.2s;
+        .user-name-mobile {
+            color: rgba(255, 255, 255, 0.77);
+            font-size: 30px;
+            width: calc(100% - 40px);
+            padding: 10px;
+        }
+        .close-button-mobile {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            right: 10px;
+            top: 10px;
+            color: #fff;
+            font-size: 30px;
+            cursor: pointer;
+            @include d-flex('c-c');
+        }
+        .menu-body-mobile {
+            position: absolute;
+            left: 0;
+            top: 60px;
+            width: 100%;
+            height: calc(100vh - 60px);
+            overflow: auto;
+            .menu-item-mobile {
+                display: block;
+                width: 100%;
+                padding: 10px 20px;
+                text-align: left;
+                color: #fff;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.46);
+                &.active {
+                    background: rgba(255, 255, 255, 0.46);
+                }
+            }
+        }
     }
     .menu-site {
         height: 60px;
@@ -127,6 +203,10 @@ header {
     position: relative;
     top: -42px;
     @include d-flex('c-c');
+    @media (max-width: 576px) {
+        height: 60px;
+        top: -30px;
+    }
     .search-block {
         @include col(6);
         height: 100%;
@@ -158,6 +238,11 @@ header {
                 position: absolute;
                 right: 22px;
                 top: 29px;
+                @media (max-width: 576px) {
+                    font-size: 25px;
+                    right: 15px;
+                    top: 19px;
+                }
             }
         }
         .fa-times {
@@ -176,6 +261,15 @@ header {
         border-radius: 8px;
         z-index: 1;
         overflow: auto;
+        @media (max-width: 992px) {
+            @include col(10);
+        }
+        @media (max-width: 576px) {
+            top: 70px;
+        }
+        @media (max-width: 500px) {
+            @include col(11);
+        }
     }
 }
 .site-content {
@@ -191,12 +285,19 @@ header {
             .body-name-and-map-url {
                 width: 100%;
                 @include d-flex('s-c');
+                @media (max-width: 576px) {
+                    flex-direction: column-reverse;
+                }
                 .title-content {
                     margin-top: 0;
                 }
                 .breadcrumb-block {
                     margin-left: 40px;
                     margin-bottom: 28px;
+                    @media (max-width: 576px) {
+                        margin-left: -30px;
+                        margin-bottom: 10px;
+                    }
                 }
             }
         }
@@ -338,6 +439,7 @@ header {
             font-size: 25px;
             @include d-flex('s-c');
             cursor: pointer;
+            margin-right: 5px;
             &:hover {
                 color: #9e8df6;
             }
@@ -352,6 +454,9 @@ header {
     .buttons {
         opacity: 0;
         @include d-flex('e-c');
+        @media (max-width: 768px) {
+            display: none !important;
+        }
         .date {
             font-weight: normal;
             font-size: 12px;
@@ -410,7 +515,7 @@ header {
             position: relative;
             top: -9px;
             @media (max-width: 576px) {
-                display: none;
+                top: -1px;
             }
             .title-player {
                 font-weight: normal;
@@ -418,6 +523,9 @@ header {
                 line-height: 16px;
                 color: #ffffff;
                 margin-bottom: 2px;
+                @media (max-width: 576px) {
+                    display: none;
+                }
             }
             .loading {
                 width: 100%;
@@ -427,11 +535,21 @@ header {
                 box-sizing: border-box;
                 border-radius: 11px;
                 cursor: pointer;
-                .progress-player {
-                    width: 20%;
+                @media (max-width: 576px) {
                     height: 10px;
-                    background: rgba(66, 49, 171, 0.77);
-                    border-radius: 8px;
+                }
+                .progress-player {
+                    width: 20px;
+                    height: 20px;
+                    background: #f50057;
+                    border-radius: 15px;
+                    position: relative;
+                    top: -5px;
+                    @media (max-width: 576px) {
+                        width: 14px;
+                        height: 14px;
+                        top: -4px;
+                    }
                 }
             }
         }

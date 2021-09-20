@@ -10,6 +10,11 @@ function HomPage() {
     const AllTracks = useSelector(
         (state: IAllTracksGet) => state.AllTracks.allTracks
     );
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const [thisPLayLists, setThisPLayLists] = useState<IAllTracks[]>([]);
     useEffect(() => {
         StartPlayList();
