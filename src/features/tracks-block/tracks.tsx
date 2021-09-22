@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TRACK_URL } from 'utils/all-api-url';
 import { useDispatch, useSelector } from 'react-redux';
@@ -56,11 +56,25 @@ function Tracks({ track }: IThisProps) {
         .replace(/--/g, '-')
         .toLowerCase();
 
+    const [playPauseThisPlayer, setPlayPauseThisPlayer] = useState(false);
+
+    useEffect(() => {
+        if (Player.playingId === Number(track.id) && Player.startPlay) {
+            setPlayPauseThisPlayer(true);
+        } else {
+            setPlayPauseThisPlayer(false);
+        }
+    }, [Player]);
+
+    function clickTrack() {
+        window.scrollTo(0, 0);
+    }
+
     return (
         <div className="tracks">
             <div className="track-name">
                 <div className="player-track">
-                    {Player.playingId === Number(track.id) ? (
+                    {playPauseThisPlayer ? (
                         <i className="far fa-pause" onClick={PauseTrack} />
                     ) : (
                         <i className="fas fa-play" onClick={StartPlayTrack} />
@@ -68,6 +82,7 @@ function Tracks({ track }: IThisProps) {
                 </div>
                 <Link
                     to={`/track/${track.id}/${trackName}`}
+                    onClick={clickTrack}
                     className="title-track">
                     {track.title.replace(/.mp3/g, '')}
                 </Link>

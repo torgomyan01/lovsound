@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Tracks from '../tracks-block/tracks';
 import * as randomstring from 'randomstring';
@@ -17,6 +17,12 @@ function SearchBlock() {
         setResult(resultTrack);
     }, [searching]);
 
+    const searchingInput = useRef<any>();
+    function closeSearchingBlock() {
+        setSearching('');
+        searchingInput.current.value = '';
+    }
+
     return (
         <div className="search">
             <div className="search-block">
@@ -26,6 +32,7 @@ function SearchBlock() {
                             setSearching(e.target.value);
                         }}
                         type="text"
+                        ref={searchingInput}
                         defaultValue={searching}
                         placeholder="Поиск"
                         id="search-site"
@@ -33,9 +40,7 @@ function SearchBlock() {
                     {searching ? (
                         <i
                             className="far fa-times"
-                            onClick={() => {
-                                setSearching('');
-                            }}
+                            onClick={closeSearchingBlock}
                         />
                     ) : (
                         <i className="far fa-search" />

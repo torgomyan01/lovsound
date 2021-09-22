@@ -97,15 +97,23 @@ function HeaderSite() {
                                                 <i className="fas fa-history mr-2" />
                                                 История
                                             </Dropdown.Item>
-                                            <Dropdown.Item href="#/action-1">
+                                            <Link
+                                                to={ALL_URL.MY_LIKES}
+                                                className="dropdown-item">
                                                 <i className="far fa-thumbs-up mr-2" />
                                                 Понравившиеся
-                                            </Dropdown.Item>
+                                            </Link>
                                             <Link
                                                 to={ALL_URL.MY_DOWNLOAD}
                                                 className="dropdown-item">
                                                 <i className="fas fa-file-download mr-2" />
                                                 Скачивание
+                                            </Link>
+                                            <Link
+                                                to={ALL_URL.MY_SAVED}
+                                                className="dropdown-item">
+                                                <i className="far fa-save mr-2" />
+                                                Сохранение
                                             </Link>
                                             <Dropdown.Item
                                                 href="#"

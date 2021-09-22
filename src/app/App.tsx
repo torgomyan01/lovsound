@@ -19,6 +19,8 @@ import { getUserId, getUserInfo, isLoginUser } from '../utils/helpers';
 import { setIsLogin, setUserId, setUserInfo } from '../redux/user';
 import { setAllLikes } from '../redux/all-likes';
 import MyDownload from '../pages/my-download';
+import MySaved from '../pages/my-seved';
+import MyLikes from '../pages/my-likes';
 
 function App() {
     const dispatch = useDispatch();
@@ -54,6 +56,8 @@ function App() {
             <Route path={ALL_URL.NEWS} exact component={NewTracks} />
             <Route path={ALL_URL.TRACK_VIEW} component={TrackView} />
             <Route path={ALL_URL.MY_DOWNLOAD} component={MyDownload} />
+            <Route path={ALL_URL.MY_SAVED} component={MySaved} />
+            <Route path={ALL_URL.MY_LIKES} component={MyLikes} />
             <Route
                 path={ALL_URL.POPULAR_TRACK}
                 exact

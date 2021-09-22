@@ -5,6 +5,7 @@ import { useParams, Link } from 'react-router-dom';
 import {
     AddDownloadTrack,
     AddMyLike,
+    AddTrackMyList,
     AddViewTrack,
     GetMyAllLikes,
     RemoveMyLike
@@ -36,18 +37,18 @@ function TrackView() {
 
     const [trackLike, setTrackLike] = useState(false);
     const [trackLikeLoading, setTrackLikeLoading] = useState(false);
+    const [trackInfo, setTrackInfo] = useState<IAllTracks>();
 
     useEffect(() => {
-        if (isLogin && AllLikes.length > 0) {
+        if (AllLikes.length > 0) {
             const ViewLike: any = AllLikes.some(
                 (like: ILikes) =>
                     like.track === trackId && like.by === UserInfo?.idu
             );
             setTrackLike(ViewLike);
         }
-    }, [AllLikes]);
+    }, [AllLikes, trackInfo]);
 
-    const [trackInfo, setTrackInfo] = useState<IAllTracks>();
     useEffect(() => {
         const currentTrack = AllTracks.find(
             (track: IAllTracks) => track.id === trackId
@@ -83,11 +84,11 @@ function TrackView() {
         if (trackInfo?.name) {
             const trackAddView = Number(trackInfo.views) + 1;
             AddViewTrack(trackId, String(trackAddView)).then();
+            document.title = trackInfo.title;
         }
     }, [trackInfo]);
 
     function playCurrentTrack() {
-        console.log(trackInfo);
         dispatch(setStartPlay(true));
         dispatch(setPlayingID(Number(trackInfo?.id)));
     }
@@ -149,6 +150,31 @@ function TrackView() {
         steRecommendYou(recTrackArr);
     }, [AllTracks, trackInfo]);
 
+    function addTrackMyList() {
+        if (UserInfo?.idu && trackInfo?.id) {
+            const formData = new FormData();
+            formData.append('userId', UserInfo?.idu);
+            formData.append('trackID', trackInfo?.id);
+            AddTrackMyList(formData).then((res) => {
+                console.log(res);
+                if (res.data === 1) {
+                    dispatch(openAlert(true));
+                    dispatch(
+                        setMessageAlert(
+                            'Thanks, the song was added to the list'
+                        )
+                    );
+                } else if (res.data === 0) {
+                    dispatch(openAlert(true));
+                    dispatch(setMessageAlert('It is already on the list'));
+                }
+            });
+        } else {
+            dispatch(openAlert(true));
+            dispatch(setMessageAlert('An error occurred. Please try again'));
+        }
+    }
+
     return (
         <HeaderFooter>
             <div className="site-content">
@@ -192,38 +218,51 @@ function TrackView() {
                             </h5>
                         </div>
                         <div className="col-md-4 down-play-block">
-                            <Button
-                                variant="outlined"
-                                color="primary"
-                                onClick={startDownloadTrack}>
-                                <i className="fal fa-download" />
-                                Скачать MP3
-                            </Button>
-                            <Button
-                                variant="outlined"
-                                className="btn-2"
-                                onClick={playCurrentTrack}
-                                color="secondary">
-                                <i className="fas fa-play" />
-                                Слушать
-                            </Button>
-                            <div className="plus-an-like">
-                                <div onClick={LikeTrack}>
-                                    {trackLikeLoading ? (
-                                        <Spinner
-                                            animation="border"
-                                            variant="danger"
-                                        />
-                                    ) : (
-                                        <i
-                                            className={`fal fa-thumbs-up ${
-                                                trackLike && 'c-pink'
-                                            }`}
-                                        />
-                                    )}
+                            <div className="row mb-3 flex-nowrap">
+                                <div className="col col-buttons-track-view">
+                                    <Button
+                                        variant="outlined"
+                                        onClick={playCurrentTrack}
+                                        color="secondary">
+                                        <i className="fas fa-play" />
+                                        Слушать
+                                    </Button>
+                                    <Button
+                                        variant="outlined"
+                                        className="btn-2"
+                                        color="primary"
+                                        onClick={startDownloadTrack}>
+                                        <i className="fal fa-download" />
+                                        Скачать MP3
+                                    </Button>
                                 </div>
-                                <div>
-                                    <i className="far fa-plus" />
+                                <div className="col col-buttons-track-view">
+                                    <Button
+                                        variant="contained"
+                                        // className="btn-2"
+                                        onClick={LikeTrack}
+                                        color={
+                                            trackLike ? 'secondary' : 'default'
+                                        }>
+                                        {trackLikeLoading ? (
+                                            <Spinner
+                                                size="sm"
+                                                className="mr-2"
+                                                animation="border"
+                                                variant="danger"
+                                            />
+                                        ) : (
+                                            <i className="fal fa-thumbs-up" />
+                                        )}
+                                        Нравится
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        onClick={addTrackMyList}
+                                        className="btn-2">
+                                        <i className="far fa-plus mr-2" />
+                                        Сохранить
+                                    </Button>
                                 </div>
                             </div>
                         </div>
@@ -245,7 +284,9 @@ function TrackView() {
                             <i className="fab fa-whatsapp-square" />
                         </div>
                     </div>
-                    <h1 className="title-content">Рекомендуем вам</h1>
+                    <h1 className="title-content track-view">
+                        Рекомендуем вам
+                    </h1>
                     {RecommendYou.splice(0, 30).map((track: IAllTracks) => {
                         return (
                             <Tracks

@@ -34,6 +34,7 @@ function Player() {
         } else {
             audioRef.current.pause();
         }
+        document.title = track?.name ? track?.title : 'LovSound';
     }, [Player, audioRef, trackUrl]);
 
     function openCLoseVolume() {
@@ -44,7 +45,11 @@ function Player() {
         dispatch(setStartPlay(false));
     }
     function playTrack() {
-        dispatch(setStartPlay(true));
+        if (Player.playingId === 0) {
+            return;
+        } else {
+            dispatch(setStartPlay(true));
+        }
     }
 
     function thisAudio() {

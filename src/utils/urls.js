@@ -3,5 +3,7 @@ export const ALL_URL = {
     TRACK_VIEW: '/track/:trackId/:trackName',
     POPULAR_TRACK: '/popular',
     NEWS: '/news',
-    MY_DOWNLOAD: '/my-downloads'
+    MY_DOWNLOAD: '/my-downloads',
+    MY_SAVED: '/my-saved',
+    MY_LIKES: '/my-likes'
 };

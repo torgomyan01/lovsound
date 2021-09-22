@@ -11,5 +11,7 @@ export const ALL_API_URL = {
     REMOVE_LIKE: `${API_URL_NAME}/remove-like.php`,
     ADD_LIKE: `${API_URL_NAME}/add-like.php`,
     ADD_DOWNLOAD: `${API_URL_NAME}/add-my-download.php`,
-    GET_DOWNLOAD: `${API_URL_NAME}/get-all-my-downlaods.php`
+    GET_DOWNLOAD: `${API_URL_NAME}/get-all-my-downlaods.php`,
+    ADD_TRACK_MY_LIST: `${API_URL_NAME}/add-my-list.php`,
+    GET_ALL_MY_SAVED_LIST: `${API_URL_NAME}/get-my-all-saved.php`
 };

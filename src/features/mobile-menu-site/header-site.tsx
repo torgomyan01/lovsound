@@ -104,7 +104,7 @@ function MobileMenuSite() {
                             </Link>
                             <Link
                                 className="menu-item-mobile"
-                                to={ALL_URL.POPULAR_TRACK}>
+                                to={ALL_URL.MY_LIKES}>
                                 <i className="far fa-thumbs-up mr-2" />
                                 Понравившиеся
                             </Link>
@@ -113,6 +113,12 @@ function MobileMenuSite() {
                                 className="menu-item-mobile">
                                 <i className="fas fa-file-download mr-2" />
                                 Скачивание
+                            </Link>
+                            <Link
+                                to={ALL_URL.MY_SAVED}
+                                className="menu-item-mobile">
+                                <i className="far fa-save mr-2" />
+                                Сохранение
                             </Link>
                             <Link
                                 to={ALL_URL.MY_DOWNLOAD}

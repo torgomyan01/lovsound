@@ -87,7 +87,7 @@ header {
         background: #00000080;
     }
     @media (max-width: 576px) {
-        height: 150px;
+        height: 90px;
     }
     .nav-site-desktop {
         @media (max-width: 992px) {
@@ -364,6 +364,19 @@ header {
             padding-top: 0;
             button {
                 width: 160px;
+                @media (max-width: 420px) {
+                    width: 130px;
+                }
+            }
+            .MuiButton-label {
+                white-space: nowrap;
+            }
+            .col-buttons-track-view {
+                margin-right: 15px;
+                @media (max-width: 420px) {
+                    margin: 0;
+                    padding-right: 0;
+                }
             }
             .btn-2 {
                 margin-top: 15px;

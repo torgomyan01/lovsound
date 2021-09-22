@@ -53,3 +53,13 @@ export const AddViewTrack = (trackID: string, viewCount: string) => {
 export const AddDownloadTrack = (data: any) => {
     return axios.post(`${ALL_API_URL.ADD_DOWNLOAD}`, data);
 };
+
+// ADD TRACK MY SAVED
+export const AddTrackMyList = (data: FormData) => {
+    return axios.post(`${ALL_API_URL.ADD_TRACK_MY_LIST}`, data);
+};
+
+// GET TRACK MY LIST SAVED
+export const GetTrackMyList = (userID: string) => {
+    return axios.get(`${ALL_API_URL.GET_ALL_MY_SAVED_LIST}?userId=${userID}`);
+};
