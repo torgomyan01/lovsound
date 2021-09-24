@@ -19,6 +19,7 @@ import Tracks from 'features/tracks-block/tracks';
 import randomstring from 'randomstring';
 import { openAlert, setMessageAlert } from 'redux/alert-site';
 import FileDownload from 'js-file-download';
+import { ALL_URL } from 'utils/urls';
 
 function TrackView() {
     const dispatch = useDispatch();
@@ -175,20 +176,56 @@ function TrackView() {
         }
     }
 
+    function shareFacebook() {
+        const url = window.location.href;
+        window.open(
+            `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+            '_blank'
+        );
+    }
+
+    function shareTelegram() {
+        const siteUrl = window.location.href;
+        const url = `https://t.me/share/url?url=${siteUrl}&text=${trackInfo?.title}`;
+        window.open(url, '_blank');
+    }
+
+    function shareVk() {
+        const siteUrl = window.location.href;
+        const url = `https://vk.com/share.php?url=${siteUrl}`;
+        window.open(url, '_blank');
+    }
+
+    function shareOk() {
+        const siteUrl = window.location.href;
+        const url = `https://connect.ok.ru/offer?url=${siteUrl}&title=${trackInfo?.title}`;
+        window.open(url, '_blank');
+    }
+    function shareWhatsUo() {
+        const siteUrl = window.location.href;
+        const url = `https://wa.me/?text=${siteUrl}`;
+        window.open(url, '_blank');
+    }
+
     return (
         <HeaderFooter>
             <div className="site-content">
                 <div className="container container-site-content">
                     <div className="block-name-and-map-url">
                         <div className="body-name-and-map-url">
-                            <h1 className="title-content">Смотреть музыки</h1>
+                            <h1 className="title-content track-view-title">
+                                Смотреть музыки
+                            </h1>
                             <div className="breadcrumb-block">
                                 <Breadcrumbs aria-label="breadcrumb">
                                     <Link className="c-grey" to="/">
                                         Главная
                                     </Link>
-                                    <Typography className="c-grey-op-5">
+                                    <Link className="c-grey" to={ALL_URL.NEWS}>
                                         Новинки
+                                    </Link>
+                                    <Typography className="c-grey-op-5">
+                                        Смотреть
                                     </Typography>
                                 </Breadcrumbs>
                             </div>
@@ -268,19 +305,19 @@ function TrackView() {
                         </div>
                     </div>
                     <div className="soc-sites">
-                        <div>
+                        <div onClick={shareFacebook}>
                             <i className="fab fa-facebook-square" />
                         </div>
-                        <div>
+                        <div onClick={shareVk}>
                             <i className="fab fa-vk" />
                         </div>
-                        <div>
+                        <div onClick={shareOk}>
                             <i className="fab fa-odnoklassniki-square" />
                         </div>
-                        <div>
+                        <div onClick={shareTelegram}>
                             <i className="fab fa-telegram" />
                         </div>
-                        <div>
+                        <div onClick={shareWhatsUo}>
                             <i className="fab fa-whatsapp-square" />
                         </div>
                     </div>

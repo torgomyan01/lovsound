@@ -75,7 +75,7 @@ function Player() {
     }
 
     function endTrack() {
-        dispatch(setPlayingID(Number(Player.playingId + 1)));
+        dispatch(setPlayingID(Number(Player.playingId - 1)));
     }
 
     return (
@@ -99,7 +99,7 @@ function Player() {
                         <i className="fas fa-play" onClick={playTrack} />
                     )}
                 </div>
-                <div className="button-player">
+                <div className="button-player  mr-2">
                     <i className="fas fa-chevron-right" onClick={trackNext} />
                 </div>
                 <div className="loading-player">
@@ -115,15 +115,18 @@ function Player() {
                 <div className="button-player">
                     {!volume ? (
                         <i
-                            className="far fa-volume"
+                            className="fal fa-volume"
                             onClick={openCLoseVolume}
                         />
                     ) : (
                         <i
-                            className="far fa-volume-mute"
+                            className="fal fa-volume-mute"
                             onClick={openCLoseVolume}
                         />
                     )}
+                </div>
+                <div className="button-player">
+                    <i className="fal fa-download" />
                 </div>
             </div>
         </div>

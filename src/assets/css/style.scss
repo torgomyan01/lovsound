@@ -295,7 +295,7 @@ header {
                     margin-left: 40px;
                     margin-bottom: 28px;
                     @media (max-width: 576px) {
-                        margin-left: -30px;
+                        margin-left: 15px;
                         margin-bottom: 10px;
                     }
                 }
@@ -311,8 +311,22 @@ header {
             position: relative;
             margin-bottom: 30px;
             padding-left: 30px;
+            &.track-view-title {
+                @media (max-width: 576px) {
+                    margin-left: -15px;
+                    padding-left: 0;
+                }
+                &:before {
+                    @media (max-width: 576px) {
+                        left: 0;
+                    }
+                }
+            }
             &.track-view {
                 margin-top: 0;
+                @media (max-width: 576px) {
+                    padding-left: 15px;
+                }
             }
             &:before {
                 content: '';
@@ -322,6 +336,9 @@ header {
                 left: 30px;
                 bottom: -5px;
                 background: $c-blue;
+                @media (max-width: 576px) {
+                    left: 15px;
+                }
             }
         }
         .track-name-view {
@@ -330,14 +347,23 @@ header {
             line-height: 29px;
             color: #000000;
             padding-left: 30px;
+            @media (max-width: 576px) {
+                padding-left: 15px;
+            }
         }
         .track-view-info {
             padding-left: 30px;
             margin-top: 20px;
+            @media (max-width: 576px) {
+                padding-left: 15px;
+            }
         }
         .hashtags {
             padding-left: 30px;
             @include d-flex('s-c');
+            @media (max-width: 576px) {
+                padding-left: 15px;
+            }
             a {
                 font-weight: normal;
                 font-size: 16px;
@@ -405,6 +431,9 @@ header {
             @include d-flex('s-c');
             font-size: 30px;
             margin-bottom: 30px;
+            @media (max-width: 576px) {
+                padding-left: 15px;
+            }
             div {
                 margin-right: 15px;
             }
@@ -442,6 +471,9 @@ header {
         .buttons {
             opacity: 1;
         }
+    }
+    @media (max-width: 576px) {
+        padding: 12px 0 12px 15px;
     }
     .track-name {
         @include d-flex('s-c');
@@ -514,9 +546,10 @@ header {
             height: 100%;
             @include d-flex('c-c');
             color: #fff;
-            font-size: 25px;
+            font-size: 20px;
             .fas,
-            .far {
+            .far,
+            .fal {
                 cursor: pointer;
                 &:hover {
                     color: #aca4d5;
@@ -567,11 +600,13 @@ header {
             }
         }
         .time {
+            width: 60px;
             font-weight: normal;
             font-size: 20px;
             line-height: 29px;
             color: #ffffff;
             margin: 0 10px;
+            text-align: center;
         }
     }
 }
