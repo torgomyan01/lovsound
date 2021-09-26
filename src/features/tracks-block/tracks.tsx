@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { TRACK_URL } from 'utils/all-api-url';
+import { TRACK_DOWNLOADING_URL, TRACK_URL } from 'utils/all-api-url';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPlayingID, setStartPlay } from 'redux/player';
-import FileDownload from 'js-file-download';
-import { AddDownloadTrack } from 'all-api/all-api';
-import { openAlert, setMessageAlert } from '../../redux/alert-site';
+import { AddDownloadTrack, AddTrackMyList } from 'all-api/all-api';
+import { openAlert, setMessageAlert } from 'redux/alert-site';
 
 interface IThisProps {
     track: IAllTracks;
@@ -36,7 +35,8 @@ function Tracks({ track }: IThisProps) {
                 dispatch(setMessageAlert('Error'));
             }
         }
-        FileDownload(trackUrl, `${track.title}.mp3`);
+        const TUrl = `${TRACK_DOWNLOADING_URL}?trackID=${track.id}`;
+        window.open(TUrl, '_blank');
         dispatch(openAlert(true));
         dispatch(setMessageAlert('Thank you, your track downloaded'));
     }
@@ -70,6 +70,31 @@ function Tracks({ track }: IThisProps) {
         window.scrollTo(0, 0);
     }
 
+    function addTrackMyList() {
+        if (UserInfo?.idu && track?.id) {
+            const formData = new FormData();
+            formData.append('userId', UserInfo?.idu);
+            formData.append('trackID', track?.id);
+            AddTrackMyList(formData).then((res) => {
+                console.log(res);
+                if (res.data === 1) {
+                    dispatch(openAlert(true));
+                    dispatch(
+                        setMessageAlert(
+                            'Thanks, the song was added to the list'
+                        )
+                    );
+                } else if (res.data === 0) {
+                    dispatch(openAlert(true));
+                    dispatch(setMessageAlert('It is already on the list'));
+                }
+            });
+        } else {
+            dispatch(openAlert(true));
+            dispatch(setMessageAlert('An error occurred. Please try again'));
+        }
+    }
+
     return (
         <div className="tracks">
             <div className="track-name">
@@ -89,7 +114,7 @@ function Tracks({ track }: IThisProps) {
             </div>
             <div className="buttons">
                 <div className="date">{track.time}</div>
-                <div className="pluse-track">
+                <div className="pluse-track" onClick={addTrackMyList}>
                     <i className="fal fa-plus" />
                 </div>
                 <div className="like-track">

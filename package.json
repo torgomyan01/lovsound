@@ -71,7 +71,6 @@
         "eslint-plugin-react-hooks": "^4.0.4",
         "formik": "^2.2.9",
         "husky": "^4.3.5",
-        "js-file-download": "^0.4.12",
         "jshint": "^2.12.0",
         "lint-staged": "^10.5.4",
         "prettier": "^2.2.1",

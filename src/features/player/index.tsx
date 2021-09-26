@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TRACK_URL } from 'utils/all-api-url';
+import { TRACK_DOWNLOADING_URL, TRACK_URL } from 'utils/all-api-url';
 import { setPlayingID, setStartPlay } from 'redux/player';
 import { time_convert } from 'utils/helpers';
 
@@ -78,6 +78,11 @@ function Player() {
         dispatch(setPlayingID(Number(Player.playingId - 1)));
     }
 
+    function downloadTrack() {
+        const TUrl = `${TRACK_DOWNLOADING_URL}?trackID=${track?.id}`;
+        window.open(TUrl, '_blank');
+    }
+
     return (
         <div className="player">
             <audio
@@ -125,7 +130,7 @@ function Player() {
                         />
                     )}
                 </div>
-                <div className="button-player">
+                <div className="button-player" onClick={downloadTrack}>
                     <i className="fal fa-download" />
                 </div>
             </div>

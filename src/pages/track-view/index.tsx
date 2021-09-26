@@ -18,8 +18,8 @@ import { setAllLikes } from 'redux/all-likes';
 import Tracks from 'features/tracks-block/tracks';
 import randomstring from 'randomstring';
 import { openAlert, setMessageAlert } from 'redux/alert-site';
-import FileDownload from 'js-file-download';
 import { ALL_URL } from 'utils/urls';
+import { TRACK_DOWNLOADING_URL } from 'utils/all-api-url';
 
 function TrackView() {
     const dispatch = useDispatch();
@@ -58,7 +58,6 @@ function TrackView() {
     }, [trackId, AllTracks]);
 
     const TrackSize = (Number(trackInfo?.size) / 1024 / 1024).toFixed();
-    const trackUrl = `https://lovsound.com/uploads/tracks/${trackInfo?.folder_name}/${trackInfo?.name}`;
 
     function startDownloadTrack(e: any) {
         e.preventDefault();
@@ -76,7 +75,8 @@ function TrackView() {
                 dispatch(setMessageAlert('Error'));
             }
         }
-        FileDownload(trackUrl, `${trackInfo?.title}.mp3`);
+        const TUrl = `${TRACK_DOWNLOADING_URL}?trackID=${trackInfo?.id}`;
+        window.open(TUrl, '_blank');
         dispatch(openAlert(true));
         dispatch(setMessageAlert('Thank you, your track downloaded'));
     }

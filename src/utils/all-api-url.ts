@@ -1,5 +1,7 @@
 const API_URL_NAME = 'https://torgomyan.site/lovsound/api/recusts';
 export const TRACK_URL = 'https://lovsound.com/uploads/tracks';
+export const TRACK_DOWNLOADING_URL =
+    'https://torgomyan.site/lovsound/api/recusts/download-track.php';
 
 export const ALL_API_URL = {
     LOGIN: `${API_URL_NAME}/login.php`,
