@@ -7,3 +7,7 @@ export const ALL_URL = {
     MY_SAVED: '/my-saved',
     MY_LIKES: '/my-likes'
 };
+
+export const DEF_URL = {
+    TRACK: '/track'
+};

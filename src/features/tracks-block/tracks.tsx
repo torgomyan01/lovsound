@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setPlayingID, setStartPlay } from 'redux/player';
 import { AddDownloadTrack, AddTrackMyList } from 'all-api/all-api';
 import { openAlert, setMessageAlert } from 'redux/alert-site';
+import { convertTrackNameToUrl } from '../../utils/helpers';
 
 interface IThisProps {
     track: IAllTracks;
@@ -49,12 +50,7 @@ function Tracks({ track }: IThisProps) {
     function PauseTrack() {
         dispatch(setStartPlay(false));
     }
-    const trackName = track.title
-        .replace(/[&\\/#,+()$~%.'":*?<>{}]/g, '')
-        .replace(/ /g, '-')
-        .replace(/---/g, '-')
-        .replace(/--/g, '-')
-        .toLowerCase();
+    const trackName = convertTrackNameToUrl(track.title);
 
     const [playPauseThisPlayer, setPlayPauseThisPlayer] = useState(false);
 

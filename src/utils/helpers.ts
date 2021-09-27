@@ -52,3 +52,17 @@ export const time_convert = (num: number) => {
         minutes > 9 ? minutes.toFixed() : `0${minutes.toFixed()}`
     }`;
 };
+
+export const convertTrackNameToUrl = (name: any) => {
+    if (name) {
+        const trackName = name
+            .replace(/[&\\/#,+()$~%.'":*?<>{}]/g, '')
+            .replace(/ /g, '-')
+            .replace(/---/g, '-')
+            .replace(/--/g, '-')
+            .toLowerCase();
+        return trackName;
+    } else {
+        return '';
+    }
+};
