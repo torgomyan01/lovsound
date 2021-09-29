@@ -23,19 +23,39 @@ function PopularTracks() {
         window.scrollTo(0, 0);
     }, []);
 
+    const [trackCount, setTrackCount] = useState<number>(30);
+    let newCount = 30;
+    useEffect(() => {
+        window.onscroll = function () {
+            const windowHeight = document.body.scrollHeight - 100;
+            const scrollTop =
+                window.innerHeight + document.documentElement.scrollTop;
+            if (
+                scrollTop >= windowHeight &&
+                scrollTop < 20000 &&
+                PopularTracks.length > trackCount
+            ) {
+                newCount += 30;
+                setTrackCount(newCount);
+            }
+        };
+    }, []);
+
     return (
         <HeaderFooter>
             <div className="site-content">
                 <div className="container container-site-content">
                     <h1 className="title-content">Популярные музыки</h1>
-                    {PopularTracks.slice(0, 30).map((track: IAllTracks) => {
-                        return (
-                            <Tracks
-                                key={randomstring.generate(30)}
-                                track={track}
-                            />
-                        );
-                    })}
+                    {PopularTracks.slice(0, trackCount).map(
+                        (track: IAllTracks) => {
+                            return (
+                                <Tracks
+                                    key={randomstring.generate(30)}
+                                    track={track}
+                                />
+                            );
+                        }
+                    )}
                 </div>
             </div>
         </HeaderFooter>

@@ -276,7 +276,7 @@ function Player() {
                         />
                     </div>
                     <div className="loading-player">
-                        <div className="title-player">{track?.title}</div>
+                        {/*<div className="title-player">{track?.title}</div>*/}
                         <div className="loading" onClick={trackTimeMove}>
                             <div
                                 className="progress-player"

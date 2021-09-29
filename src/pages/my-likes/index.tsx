@@ -35,13 +35,31 @@ function MyLikes() {
         }
     }, [UserInfo, AllTracks, AllLikes]);
 
+    const [trackCount, setTrackCount] = useState<number>(30);
+    let newCount = 30;
+    useEffect(() => {
+        window.onscroll = function () {
+            const windowHeight = document.body.scrollHeight - 100;
+            const scrollTop =
+                window.innerHeight + document.documentElement.scrollTop;
+            if (
+                scrollTop >= windowHeight &&
+                scrollTop < 20000 &&
+                myDownloadsTracks.length > trackCount
+            ) {
+                newCount += 30;
+                setTrackCount(newCount);
+            }
+        };
+    }, []);
+
     return (
         <HeaderFooter>
             <div className="site-content">
                 <div className="container container-site-content">
                     <h1 className="title-content">My Likes</h1>
                     {myDownloadsTracks
-                        .splice(0, 30)
+                        .splice(0, trackCount)
                         .map((track: IAllTracks) => {
                             return (
                                 <Tracks

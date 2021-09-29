@@ -35,19 +35,39 @@ function MySaved() {
         }
     }, [UserInfo, AllTracks]);
 
+    const [trackCount, setTrackCount] = useState<number>(30);
+    let newCount = 30;
+    useEffect(() => {
+        window.onscroll = function () {
+            const windowHeight = document.body.scrollHeight - 100;
+            const scrollTop =
+                window.innerHeight + document.documentElement.scrollTop;
+            if (
+                scrollTop >= windowHeight &&
+                scrollTop < 20000 &&
+                mySavedTracks.length > trackCount
+            ) {
+                newCount += 30;
+                setTrackCount(newCount);
+            }
+        };
+    }, []);
+
     return (
         <HeaderFooter>
             <div className="site-content">
                 <div className="container container-site-content">
                     <h1 className="title-content">Мой сохранение </h1>
-                    {mySavedTracks.splice(0, 30).map((track: IAllTracks) => {
-                        return (
-                            <Tracks
-                                key={randomstring.generate(30)}
-                                track={track}
-                            />
-                        );
-                    })}
+                    {mySavedTracks
+                        .splice(0, trackCount)
+                        .map((track: IAllTracks) => {
+                            return (
+                                <Tracks
+                                    key={randomstring.generate(30)}
+                                    track={track}
+                                />
+                            );
+                        })}
                 </div>
             </div>
         </HeaderFooter>

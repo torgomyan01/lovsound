@@ -22,9 +22,9 @@ function HomPage() {
 
     useEffect(() => {
         if (AllTracks.length > 0) {
-            const newTracks = AllTracks.slice()
-                .sort((a, b) => Number(b.views) - Number(a.views))
-                .slice(0, 30);
+            const newTracks = AllTracks.slice().sort(
+                (a, b) => Number(b.views) - Number(a.views)
+            );
             setThisPLayLists(newTracks);
         }
     }, [AllTracks]);
@@ -40,6 +40,24 @@ function HomPage() {
         dispatch(setPlayList(thisPLayLists));
     }, [thisPLayLists]);
 
+    const [trackCount, setTrackCount] = useState<number>(30);
+    let newCount = 30;
+    useEffect(() => {
+        window.onscroll = function () {
+            const windowHeight = document.body.scrollHeight - 100;
+            const scrollTop =
+                window.innerHeight + document.documentElement.scrollTop;
+            if (
+                scrollTop >= windowHeight &&
+                scrollTop < 20000 &&
+                thisPLayLists.length > trackCount
+            ) {
+                newCount += 30;
+                setTrackCount(newCount);
+            }
+        };
+    }, []);
+
     return (
         <HeaderFooter>
             <div className="site-content">
@@ -47,14 +65,16 @@ function HomPage() {
                     <h1 className="title-content">Рекомендуем музыки</h1>
 
                     {thisPLayLists.length > 0 &&
-                        thisPLayLists?.map((tracks: any) => {
-                            return (
-                                <Tracks
-                                    key={randomstring.generate(30)}
-                                    track={tracks}
-                                />
-                            );
-                        })}
+                        thisPLayLists
+                            ?.slice(0, trackCount)
+                            .map((tracks: any) => {
+                                return (
+                                    <Tracks
+                                        key={randomstring.generate(30)}
+                                        track={tracks}
+                                    />
+                                );
+                            })}
                 </div>
             </div>
         </HeaderFooter>

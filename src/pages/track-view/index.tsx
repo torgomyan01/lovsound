@@ -207,6 +207,24 @@ function TrackView() {
         window.open(url, '_blank');
     }
 
+    const [trackCount, setTrackCount] = useState<number>(30);
+    let newCount = 30;
+    useEffect(() => {
+        window.onscroll = function () {
+            const windowHeight = document.body.scrollHeight - 100;
+            const scrollTop =
+                window.innerHeight + document.documentElement.scrollTop;
+            if (
+                scrollTop >= windowHeight &&
+                scrollTop < 20000 &&
+                RecommendYou.length > trackCount
+            ) {
+                newCount += 30;
+                setTrackCount(newCount);
+            }
+        };
+    }, []);
+
     return (
         <HeaderFooter>
             <div className="site-content">
@@ -324,14 +342,16 @@ function TrackView() {
                     <h1 className="title-content track-view">
                         Рекомендуем вам
                     </h1>
-                    {RecommendYou.splice(0, 30).map((track: IAllTracks) => {
-                        return (
-                            <Tracks
-                                key={randomstring.generate(30)}
-                                track={track}
-                            />
-                        );
-                    })}
+                    {RecommendYou.slice(0, trackCount).map(
+                        (track: IAllTracks) => {
+                            return (
+                                <Tracks
+                                    key={randomstring.generate(30)}
+                                    track={track}
+                                />
+                            );
+                        }
+                    )}
                 </div>
             </div>
         </HeaderFooter>
