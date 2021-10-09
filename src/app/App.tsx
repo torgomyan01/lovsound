@@ -21,6 +21,7 @@ import { setAllLikes } from '../redux/all-likes';
 import MyDownload from '../pages/my-download';
 import MySaved from '../pages/my-seved';
 import MyLikes from '../pages/my-likes';
+import HashtagsPage from '../pages/hashtags-page';
 
 function App() {
     const dispatch = useDispatch();
@@ -58,6 +59,7 @@ function App() {
             <Route path={ALL_URL.MY_DOWNLOAD} component={MyDownload} />
             <Route path={ALL_URL.MY_SAVED} component={MySaved} />
             <Route path={ALL_URL.MY_LIKES} component={MyLikes} />
+            <Route path={ALL_URL.HASHTAGS} component={HashtagsPage} />
             <Route
                 path={ALL_URL.POPULAR_TRACK}
                 exact

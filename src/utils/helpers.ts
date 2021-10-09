@@ -66,3 +66,50 @@ export const convertTrackNameToUrl = (name: any) => {
         return '';
     }
 };
+
+export const addTrackCount = (result: any) => {
+    let newCount = 30;
+    window.onscroll = function () {
+        const windowHeight = document.body.scrollHeight - 300;
+        const scrollTop =
+            window.innerHeight + document.documentElement.scrollTop;
+        if (scrollTop >= windowHeight && scrollTop < 20000) {
+            newCount += 30;
+            result(newCount);
+        }
+    };
+};
+
+export const textCrop = (text: string, length: number) => {
+    return text.length > length ? `${text.substring(0, length)}...` : text;
+};
+
+export const viewAllHashtagsText = (text: string, result: any) => {
+    const hashtagsArray = [];
+    let hashtag = '';
+    let openConcat = false;
+    for (let i = 0; i < text.length; i++) {
+        const symbol = text[i];
+        if (symbol === '#') {
+            openConcat = true;
+        }
+        if (openConcat && symbol === ' ') {
+            openConcat = false;
+            hashtagsArray.push(hashtag);
+            hashtag = '';
+        }
+        if (openConcat) {
+            hashtag += symbol;
+        }
+    }
+    result(hashtagsArray);
+};
+
+export const trackTitleClear = (text: string | undefined) => {
+    return text
+        ?.replace(/.mp3/g, '')
+        .replace(/\?/g, '')
+        .replace(/Video/g, '')
+        .replace(/video/g, '')
+        .replace(/4K/g, '');
+};

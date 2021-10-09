@@ -311,6 +311,10 @@ header {
             position: relative;
             margin-bottom: 30px;
             padding-left: 30px;
+            @media (max-width: 576px) {
+                margin-left: 15px;
+                padding-left: 0;
+            }
             &.track-view-title {
                 @media (max-width: 576px) {
                     margin-left: -15px;
@@ -325,7 +329,7 @@ header {
             &.track-view {
                 margin-top: 0;
                 @media (max-width: 576px) {
-                    padding-left: 15px;
+                    padding-left: 0;
                 }
             }
             &:before {
@@ -337,8 +341,34 @@ header {
                 bottom: -5px;
                 background: $c-blue;
                 @media (max-width: 576px) {
-                    left: 15px;
+                    left: 0;
                 }
+            }
+        }
+        .track-view-description {
+            padding-left: 30px;
+            width: 100%;
+            font-size: 15px;
+            margin-top: -10px;
+            margin-bottom: 20px;
+            white-space: break-spaces;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-shadow: inset 0 -3px 10px -8px #000;
+            padding-bottom: 15px;
+            @media (max-width: 576px) {
+                padding-left: 15px;
+            }
+        }
+        .open-close-track-info {
+            padding-left: 30px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #282727;
+            @media (max-width: 576px) {
+                padding-left: 15px;
             }
         }
         .track-name-view {
@@ -361,6 +391,7 @@ header {
         .hashtags {
             padding-left: 30px;
             @include d-flex('s-c');
+            flex-wrap: wrap;
             @media (max-width: 576px) {
                 padding-left: 15px;
             }
@@ -477,6 +508,9 @@ header {
     }
     .track-name {
         @include d-flex('s-c');
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         .player-track {
             width: 35px;
             height: 30px;
@@ -494,6 +528,9 @@ header {
             font-size: 16px;
             line-height: 19px;
             color: $c-blue;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
     .buttons {

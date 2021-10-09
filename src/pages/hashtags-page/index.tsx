@@ -5,21 +5,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as randomstring from 'randomstring';
 import { setPlayList } from 'redux/player';
 import { addTrackCount } from 'utils/helpers';
+import { GetTrackHashtags } from 'all-api/all-api';
+import { Link, useParams } from 'react-router-dom';
+import { DEF_URL } from 'utils/urls';
 
-function HomPage() {
+function HashtagsPage() {
     const dispatch = useDispatch();
+    const { hashtagName }: { hashtagName: string } = useParams();
     const AllTracks = useSelector(
         (state: IAllTracksGet) => state.AllTracks.allTracks
     );
-
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
     const [thisPLayLists, setThisPLayLists] = useState<IAllTracks[]>([]);
     useEffect(() => {
-        StartPlayList();
-    }, [AllTracks]);
+        GetTrackHashtags(hashtagName).then((res) => {
+            setThisPLayLists(res.data);
+        });
+    }, [hashtagName]);
 
     useEffect(() => {
         if (AllTracks.length > 0) {
@@ -30,12 +35,6 @@ function HomPage() {
         }
     }, [AllTracks]);
 
-    function StartPlayList() {
-        setThisPLayLists([]);
-        dispatch(setPlayList([]));
-        const homeTrack = AllTracks.slice(0, 30);
-        setThisPLayLists(homeTrack);
-    }
     useEffect(() => {
         dispatch(setPlayList([]));
         dispatch(setPlayList(thisPLayLists));
@@ -52,8 +51,12 @@ function HomPage() {
         <HeaderFooter>
             <div className="site-content">
                 <div className="container container-site-content">
-                    <h1 className="title-content">Рекомендуем музыки</h1>
-
+                    <h1 className="title-content">Поиск с тежеми</h1>
+                    <div className="hashtags">
+                        <Link to={`${DEF_URL.HASHTAGS}/${hashtagName}`}>
+                            #{hashtagName}
+                        </Link>
+                    </div>
                     {thisPLayLists.length > 0 &&
                         thisPLayLists
                             ?.slice(0, trackCount)
@@ -71,4 +74,4 @@ function HomPage() {
     );
 }
 
-export default HomPage;
+export default HashtagsPage;

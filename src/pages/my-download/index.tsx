@@ -4,6 +4,7 @@ import Tracks from 'features/tracks-block/tracks';
 import { useSelector } from 'react-redux';
 import * as randomstring from 'randomstring';
 import { GetMyDownloads } from '../../all-api/all-api';
+import { addTrackCount } from '../../utils/helpers';
 
 function MyDownload() {
     useEffect(() => {
@@ -38,21 +39,10 @@ function MyDownload() {
     }, [UserInfo, AllTracks]);
 
     const [trackCount, setTrackCount] = useState<number>(30);
-    let newCount = 30;
     useEffect(() => {
-        window.onscroll = function () {
-            const windowHeight = document.body.scrollHeight - 100;
-            const scrollTop =
-                window.innerHeight + document.documentElement.scrollTop;
-            if (
-                scrollTop >= windowHeight &&
-                scrollTop < 20000 &&
-                myDownloadsTracks.length > trackCount
-            ) {
-                newCount += 30;
-                setTrackCount(newCount);
-            }
-        };
+        addTrackCount(function (res: number) {
+            setTrackCount(res);
+        });
     }, []);
 
     return (

@@ -17,8 +17,17 @@ export const GetAllTracks = () => {
 };
 
 // GET TRACK TO TRACK VIEW PAGE
-export const GetTracks = (trackID: string) => {
-    return axios.get(`${ALL_API_URL.GET_TRACK}?trackID=${trackID}`);
+export const GetTrack = (trackID: string) => {
+    const formData = new FormData();
+    formData.append('trackID', trackID);
+    return axios.post(`${ALL_API_URL.GET_TRACK}`, formData);
+};
+
+// GET TRACK FOR HASHTAGS
+export const GetTrackHashtags = (trackName: string) => {
+    const formData = new FormData();
+    formData.append('hashtagName', trackName);
+    return axios.post(`${ALL_API_URL.GET_TRACK_FOR_HASHTAG}`, formData);
 };
 
 // GET ALL MY LIKES

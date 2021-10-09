@@ -8,6 +8,7 @@ import {
     AddTrackMyList,
     AddViewTrack,
     GetMyAllLikes,
+    GetTrack,
     RemoveMyLike
 } from 'all-api/all-api';
 import { setPlayingID, setStartPlay } from 'redux/player';
@@ -18,8 +19,13 @@ import { setAllLikes } from 'redux/all-likes';
 import Tracks from 'features/tracks-block/tracks';
 import randomstring from 'randomstring';
 import { openAlert, setMessageAlert } from 'redux/alert-site';
-import { ALL_URL } from 'utils/urls';
+import { ALL_URL, DEF_URL } from 'utils/urls';
 import { TRACK_DOWNLOADING_URL } from 'utils/all-api-url';
+import {
+    addTrackCount,
+    trackTitleClear,
+    viewAllHashtagsText
+} from 'utils/helpers';
 
 function TrackView() {
     const dispatch = useDispatch();
@@ -27,6 +33,9 @@ function TrackView() {
     const AllLikes = useSelector((state: IAllLikes) => state.AllLikes.AllLikes);
     const isLogin = useSelector((state: IAuth) => state.AuthSite.isLogin);
     const UserInfo = useSelector((state: IAuth) => state.AuthSite.userInfo);
+
+    const Player = useSelector((state: IPlayer) => state.Player);
+    const [playPauseThisPlayer, setPlayPauseThisPlayer] = useState(false);
 
     const AllTracks = useSelector(
         (state: IAllTracksGet) => state.AllTracks.allTracks
@@ -40,6 +49,22 @@ function TrackView() {
     const [trackLikeLoading, setTrackLikeLoading] = useState(false);
     const [trackInfo, setTrackInfo] = useState<IAllTracks>();
 
+    const trackTitle = trackTitleClear(trackInfo?.title);
+
+    useEffect(() => {
+        GetTrack(trackId).then((res) => {
+            setTrackInfo(res.data);
+        });
+    }, [trackId]);
+
+    useEffect(() => {
+        if (Player.playingId === Number(trackId) && Player.startPlay) {
+            setPlayPauseThisPlayer(true);
+        } else {
+            setPlayPauseThisPlayer(false);
+        }
+    }, [Player]);
+
     useEffect(() => {
         if (AllLikes.length > 0) {
             const ViewLike: any = AllLikes.some(
@@ -49,13 +74,6 @@ function TrackView() {
             setTrackLike(ViewLike);
         }
     }, [AllLikes, trackInfo]);
-
-    useEffect(() => {
-        const currentTrack = AllTracks.find(
-            (track: IAllTracks) => track.id === trackId
-        );
-        setTrackInfo(currentTrack);
-    }, [trackId, AllTracks]);
 
     const TrackSize = (Number(trackInfo?.size) / 1024 / 1024).toFixed();
 
@@ -85,13 +103,18 @@ function TrackView() {
         if (trackInfo?.name) {
             const trackAddView = Number(trackInfo.views) + 1;
             AddViewTrack(trackId, String(trackAddView)).then();
-            document.title = trackInfo.title;
+            document.title = trackTitle ? trackTitle : 'LovSound';
         }
     }, [trackInfo]);
 
     function playCurrentTrack() {
-        dispatch(setStartPlay(true));
-        dispatch(setPlayingID(Number(trackInfo?.id)));
+        if (Player.startPlay) {
+            dispatch(setStartPlay(false));
+            dispatch(setPlayingID(Number(trackInfo?.id)));
+        } else {
+            dispatch(setStartPlay(true));
+            dispatch(setPlayingID(Number(trackInfo?.id)));
+        }
     }
 
     function LikeTrack() {
@@ -208,22 +231,27 @@ function TrackView() {
     }
 
     const [trackCount, setTrackCount] = useState<number>(30);
-    let newCount = 30;
     useEffect(() => {
-        window.onscroll = function () {
-            const windowHeight = document.body.scrollHeight - 100;
-            const scrollTop =
-                window.innerHeight + document.documentElement.scrollTop;
-            if (
-                scrollTop >= windowHeight &&
-                scrollTop < 20000 &&
-                RecommendYou.length > trackCount
-            ) {
-                newCount += 30;
-                setTrackCount(newCount);
-            }
-        };
+        addTrackCount(function (res: number) {
+            setTrackCount(res);
+        });
     }, []);
+
+    const trackDescription = trackInfo?.description.replace(/\?/g, '');
+
+    const [informationBlock, setInformationBlock] = useState<boolean>(false);
+    function openCloseInformationTrack() {
+        setInformationBlock(!informationBlock);
+    }
+    const [hashtags, setHashtags] = useState<string[]>([]);
+
+    useEffect(() => {
+        if (trackDescription) {
+            viewAllHashtagsText(trackDescription, function (res: any) {
+                setHashtags(res);
+            });
+        }
+    }, [trackDescription]);
 
     return (
         <HeaderFooter>
@@ -249,11 +277,20 @@ function TrackView() {
                             </div>
                         </div>
                     </div>
-                    <h1 className="track-name-view">{trackInfo?.title}</h1>
+                    <h1 className="track-name-view">{trackTitle}</h1>
                     <div className="hashtags">
-                        <Link to="/hashtags/hip-hop">#2021,</Link>
-                        <Link to="/hashtags/hip-hop">#hip-hop,</Link>
-                        <Link to="/hashtags/hip-hop">#Armenian,</Link>
+                        {hashtags.map((hashtag: string, index: number) => {
+                            const hashtagUrl = hashtag.replace(/#/g, '');
+                            return (
+                                <Link
+                                    key={randomstring.generate(30)}
+                                    to={`${DEF_URL.HASHTAGS}/${hashtagUrl}`}>
+                                    {index !== hashtags.length - 1
+                                        ? `${hashtag},`
+                                        : hashtag}
+                                </Link>
+                            );
+                        })}
                     </div>
                     <div className="row track-view-info">
                         <div className="col-md-4">
@@ -279,8 +316,17 @@ function TrackView() {
                                         variant="outlined"
                                         onClick={playCurrentTrack}
                                         color="secondary">
-                                        <i className="fas fa-play" />
-                                        Слушать
+                                        {playPauseThisPlayer ? (
+                                            <>
+                                                <i className="far fa-pause mr-2" />
+                                                Играет
+                                            </>
+                                        ) : (
+                                            <>
+                                                <i className="fas fa-play" />
+                                                Слушать
+                                            </>
+                                        )}
                                     </Button>
                                     <Button
                                         variant="outlined"
@@ -339,6 +385,25 @@ function TrackView() {
                             <i className="fab fa-whatsapp-square" />
                         </div>
                     </div>
+                    {trackDescription && (
+                        <>
+                            <h1 className="title-content track-view">
+                                Описания
+                            </h1>
+                            <p
+                                className="track-view-description"
+                                style={{
+                                    height: informationBlock ? 'auto' : '70px'
+                                }}>
+                                {trackDescription}
+                            </p>
+                            <div className="open-close-track-info">
+                                <span onClick={openCloseInformationTrack}>
+                                    {informationBlock ? 'Свернуть' : 'Ещё'}
+                                </span>
+                            </div>
+                        </>
+                    )}
                     <h1 className="title-content track-view">
                         Рекомендуем вам
                     </h1>

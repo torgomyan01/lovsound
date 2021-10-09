@@ -5,9 +5,11 @@ export const ALL_URL = {
     NEWS: '/news',
     MY_DOWNLOAD: '/my-downloads',
     MY_SAVED: '/my-saved',
-    MY_LIKES: '/my-likes'
+    MY_LIKES: '/my-likes',
+    HASHTAGS: '/hashtags/:hashtagName'
 };
 
 export const DEF_URL = {
-    TRACK: '/track'
+    TRACK: '/track',
+    HASHTAGS: '/hashtags'
 };

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setPlayingID, setStartPlay } from 'redux/player';
 import { AddDownloadTrack, AddTrackMyList } from 'all-api/all-api';
 import { openAlert, setMessageAlert } from 'redux/alert-site';
-import { convertTrackNameToUrl } from '../../utils/helpers';
+import { convertTrackNameToUrl, trackTitleClear } from 'utils/helpers';
 
 interface IThisProps {
     track: IAllTracks;
@@ -14,7 +14,6 @@ interface IThisProps {
 function Tracks({ track }: IThisProps) {
     const dispatch = useDispatch();
     const Player = useSelector((state: IPlayer) => state.Player);
-    const trackUrl = `${TRACK_URL}/${track?.folder_name}/${track?.name}`;
     const UserInfo = useSelector((state: IAuth) => state.AuthSite.userInfo);
     const isLogin = useSelector((state: IAuth) => state.AuthSite.isLogin);
 
@@ -90,6 +89,7 @@ function Tracks({ track }: IThisProps) {
             dispatch(setMessageAlert('An error occurred. Please try again'));
         }
     }
+    const trackTitle = trackTitleClear(track.title);
 
     return (
         <div className="tracks">
@@ -105,11 +105,10 @@ function Tracks({ track }: IThisProps) {
                     to={`/track/${track.id}/${trackName}`}
                     onClick={clickTrack}
                     className="title-track">
-                    {track.title.replace(/.mp3/g, '')}
+                    {trackTitle}
                 </Link>
             </div>
             <div className="buttons">
-                <div className="date">{track.time}</div>
                 <div className="pluse-track" onClick={addTrackMyList}>
                     <i className="fal fa-plus" />
                 </div>

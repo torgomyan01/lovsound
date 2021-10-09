@@ -15,5 +15,6 @@ export const ALL_API_URL = {
     ADD_DOWNLOAD: `${API_URL_NAME}/add-my-download.php`,
     GET_DOWNLOAD: `${API_URL_NAME}/get-all-my-downlaods.php`,
     ADD_TRACK_MY_LIST: `${API_URL_NAME}/add-my-list.php`,
+    GET_TRACK_FOR_HASHTAG: `${API_URL_NAME}/search-track-for-tags.php`,
     GET_ALL_MY_SAVED_LIST: `${API_URL_NAME}/get-my-all-saved.php`
 };
